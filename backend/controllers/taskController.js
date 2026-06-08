@@ -39,6 +39,26 @@ const createTask = (req, res) => {
   });
 };
 
+const deleteTask = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const taskIndex = tasks.findIndex(task => task.id === id);
+
+  if (taskIndex === -1) {
+    return res.status(404).json({
+      success: false,
+      message: "Task not found"
+    });
+  }
+
+  const deletedTask = tasks.splice(taskIndex, 1);
+
+  res.status(200).json({
+    success: true,
+    data: deletedTask[0]
+  });
+};
+
 const updateTask = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -70,5 +90,6 @@ const updateTask = (req, res) => {
 module.exports = {
   getTasks,
   createTask,
-  updateTask
+  updateTask,
+  deleteTask
 };

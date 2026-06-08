@@ -7,13 +7,20 @@ console.log("taskRoutes loaded");
 const {
   getTasks,
   createTask,
-  updateTask
+  updateTask,
+  deleteTask
 } = require("../controllers/taskController");
 
-// GET all tasks
+
+
 router.get("/", getTasks);
 router.post("/", createTask);
-router.put("/:id", updateTask);
+
+
+router.route("/:id")
+  .put(updateTask)
+  .delete(deleteTask);
+
 
 
 module.exports = router;
