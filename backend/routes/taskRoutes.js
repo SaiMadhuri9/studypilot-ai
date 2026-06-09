@@ -8,14 +8,15 @@ const {
   getTasks,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  generateStudyPlan,
 } = require("../controllers/taskController");
 
 
 
 router.get("/", getTasks);
 router.post("/", createTask);
-
+router.post("/study-plan", generateStudyPlan);
 
 router.route("/:id")
   .put(updateTask)
