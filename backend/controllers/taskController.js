@@ -1,90 +1,95 @@
-const tasks = [
-  {
-    id: 1,
-    title: "Learn Node.js",
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    id: 2,
-    title: "Build StudyPilot AI",
-    completed: false,
-    createdAt: new Date()
-  }
-];
+const Task = require("../models/Task");
 
-const getTasks = (req, res) => {
-  res.status(200).json({
-    success: true,
-    count: tasks.length,
-    data: tasks
-  });
-};
+const getTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find();
 
-const createTask = (req, res) => {
-  const { title } = req.body;
-
-  const newTask = {
-    id: 3,
-    title,
-    completed: false,
-    createdAt: new Date()
-  };
-
-  tasks.push(newTask);
-
-  res.status(201).json({
-    success: true,
-    data: newTask
-  });
-};
-
-const deleteTask = (req, res) => {
-  const id = parseInt(req.params.id);
-
-  const taskIndex = tasks.findIndex(task => task.id === id);
-
-  if (taskIndex === -1) {
-    return res.status(404).json({
+    res.status(200).json({
+      success: true,
+      count: tasks.length,
+      data: tasks
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: "Task not found"
+      message: error.message
     });
   }
-
-  const deletedTask = tasks.splice(taskIndex, 1);
-
-  res.status(200).json({
-    success: true,
-    data: deletedTask[0]
-  });
 };
 
-const updateTask = (req, res) => {
-  const id = parseInt(req.params.id);
+const createTask = async (req, res) => {
+  try {
+    const { title } = req.body;
 
-  const task = tasks.find(task => task.id === id);
+    const newTask = await Task.create({
+      title
+    });
 
-  if (!task) {
-    return res.status(404).json({
+    res.status(201).json({
+      success: true,
+      data: newTask
+    });
+
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: "Task not found"
+      message: error.message
     });
   }
+};
+const deleteTask = async (req, res) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
 
-  const { title, completed } = req.body;
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
 
-  if (title !== undefined) {
-    task.title = title;
+    res.status(200).json({
+      success: true,
+      data: task,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
+};
 
-  if (completed !== undefined) {
-    task.completed = completed;
+const updateTask = async (req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: task,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-
-  res.json({
-    success: true,
-    data: task
-  });
 };
 const generateStudyPlan = (req, res) => {
   const { subject, daysLeft, hoursPerDay } = req.body;
