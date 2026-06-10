@@ -1,5 +1,20 @@
 const Task = require("../models/Task");
 
+const tasks = [
+  {
+    id: 1,
+    title: "Learn Node.js",
+    completed: false,
+    createdAt: new Date()
+  },
+  {
+    id: 2,
+    title: "Build StudyPilot AI",
+    completed: false,
+    createdAt: new Date()
+  }
+];
+
 const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find();
@@ -22,21 +37,30 @@ const createTask = async (req, res) => {
     const { title } = req.body;
 
     const newTask = await Task.create({
-      title
+      title,
     });
 
     res.status(201).json({
       success: true,
-      data: newTask
+      data: newTask,
     });
 
   } catch (error) {
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
+
 const deleteTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
@@ -54,6 +78,14 @@ const deleteTask = async (req, res) => {
     });
 
   } catch (error) {
+
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid task ID",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -85,12 +117,28 @@ const updateTask = async (req, res) => {
     });
 
   } catch (error) {
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid task ID",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
 const generateStudyPlan = (req, res) => {
   const { subject, daysLeft, hoursPerDay } = req.body;
 
