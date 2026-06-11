@@ -17,7 +17,21 @@ const tasks = [
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const filter = {};
+    if (req.query.search) {
+  filter.title = {
+    $regex: req.query.search,
+    $options: "i",
+  };
+}
+    if (req.query.completed === "true") {
+  filter.completed = true;
+}
+
+if (req.query.completed === "false") {
+  filter.completed = false;
+}
+    const tasks = await Task.find(filter);
 
     res.status(200).json({
       success: true,
@@ -63,7 +77,14 @@ const createTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const task = await Task.findByIdAndUpdate(
+  req.params.id,
+  req.body,
+  {
+    returnDocument: "after",
+    runValidators: true,
+  }
+);
 
     if (!task) {
       return res.status(404).json({
@@ -124,6 +145,38 @@ const updateTask = async (req, res) => {
         message: error.message,
       });
     }
+
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid task ID",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getTaskById = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: task,
+    });
+
+  } catch (error) {
 
     if (error.name === "CastError") {
       return res.status(400).json({
@@ -210,6 +263,7 @@ res.json({
 
 module.exports = {
   getTasks,
+  getTaskById,
   createTask,
   updateTask,
   deleteTask,
