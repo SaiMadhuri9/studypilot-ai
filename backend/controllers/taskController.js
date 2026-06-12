@@ -77,14 +77,8 @@ const createTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(
-  req.params.id,
-  req.body,
-  {
-    returnDocument: "after",
-    runValidators: true,
-  }
-);
+
+    const task = await Task.findByIdAndDelete(req.params.id);
 
     if (!task) {
       return res.status(404).json({
@@ -113,7 +107,6 @@ const deleteTask = async (req, res) => {
     });
   }
 };
-
 const updateTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndUpdate(
@@ -260,6 +253,8 @@ res.json({
   dailyPlan: plan
 });
 };
+
+
 
 module.exports = {
   getTasks,
