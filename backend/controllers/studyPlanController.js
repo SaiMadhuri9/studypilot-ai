@@ -3,6 +3,7 @@ console.log("STUDY PLAN CONTROLLER LOADED");
 const Task = require("../models/Task");
 const roadmaps = require("../data/roadmaps");
 const goalMappings = require("../data/goalMappings");
+const aliases = require("../data/aliases");
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -38,24 +39,41 @@ for (const key of Object.keys(goalMappings)) {
 
 }
 
-// DSA aliases
-if (
-  plan.length === 0 &&
-  (
-    userGoal.includes("leetcode") ||
-    userGoal.includes("coding interview") ||
-    userGoal.includes("data structures") ||
-    userGoal.includes("algorithms")
-  )
-) {
-  plan = goalMappings.dsa;
+for (const roadmapKey of Object.keys(aliases)) {
+
+  if (plan.length > 0) {
+    break;
+  }
+
+  for (const alias of aliases[roadmapKey]) {
+
+    if (userGoal.includes(alias)) {
+
+      plan = goalMappings[roadmapKey];
+
+      break;
+
+    }
+
+  }
+
 }
+
 
 if (plan.length === 0) {
 
   return res.status(400).json({
     success: false,
-    message: "Goal not supported"
+    message: "Goal not supported",
+    suggestions: [
+      "JavaScript",
+      "HTML",
+      "Python",
+      "React",
+      "Java",
+      "DSA",
+      "Full Stack Developer"
+    ]
   });
 
 }

@@ -6,7 +6,8 @@ const goalMappings = {
   python: roadmaps.python,
   react: roadmaps.react,
   java: roadmaps.java,
-  dsa: roadmaps.dsa
+  dsa: roadmaps.dsa,
+  fullstack: roadmaps.fullstack,
 };
 
 module.exports = goalMappings;

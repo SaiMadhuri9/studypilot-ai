@@ -194,18 +194,34 @@ const days = daysInput.value;
   days: days
 })
   })
-  .then((response) => response.json())
-  .then((data) => {
-    studyInfo.style.display = "block";
-    studyInfo.innerHTML = `
-  <h3>Study Plan Info</h3>
-  <p><strong>Difficulty:</strong> ${data.difficulty}</p>
-  <p><strong>Topics Per Day:</strong> ${data.topicsPerDay}</p>
-  <p>${data.warning}</p>
-`;
-    goalInput.value = "";
+.then((response) => response.json())
+.then((data) => {
 
-    loadTasks();
-  });
+  if (!data.success) {
+
+    alert(
+      data.message +
+      "\n\nSupported Goals:\n" +
+      data.suggestions.join("\n")
+    );
+
+    return;
+  }
+
+  studyInfo.style.display = "block";
+
+  studyInfo.innerHTML = `
+    <h3>Study Plan Info</h3>
+    <p><strong>Difficulty:</strong> ${data.difficulty}</p>
+    <p><strong>Topics Per Day:</strong> ${data.topicsPerDay}</p>
+    <p>${data.warning}</p>
+  `;
+
+  goalInput.value = "";
+
+  loadTasks();
 
 });
+
+});
+

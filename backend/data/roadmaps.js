@@ -106,6 +106,22 @@ dsa: [
   "Dynamic Programming",
   "Greedy Algorithms",
   "Mini Project"
+],
+fullstack: [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "Git & GitHub",
+  "DOM",
+  "Fetch API",
+  "React",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "Authentication",
+  "REST APIs",
+  "Deployment",
+  "Capstone Project"
 ]
 
 };
