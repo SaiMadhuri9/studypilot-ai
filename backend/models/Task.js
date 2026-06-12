@@ -12,6 +12,11 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    isGenerated: {
+  type: Boolean,
+  default: false
+}
   },
   {
     timestamps: true,

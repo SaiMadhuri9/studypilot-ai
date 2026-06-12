@@ -6,6 +6,7 @@ const addBtn = document.getElementById("addBtn");
 const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
+const studyInfo = document.getElementById("studyInfo");
 
 function loadTasks() {
 
@@ -122,8 +123,12 @@ const days = daysInput.value;
   })
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
-
+    studyInfo.innerHTML = `
+  <h3>Study Plan Info</h3>
+  <p><strong>Difficulty:</strong> ${data.difficulty}</p>
+  <p><strong>Topics Per Day:</strong> ${data.topicsPerDay}</p>
+  <p>${data.warning}</p>
+`;
     goalInput.value = "";
 
     loadTasks();
