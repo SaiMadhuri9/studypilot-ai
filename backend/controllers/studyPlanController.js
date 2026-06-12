@@ -1,6 +1,8 @@
+
 console.log("STUDY PLAN CONTROLLER LOADED");
 const Task = require("../models/Task");
 const roadmaps = require("../data/roadmaps");
+const goalMappings = require("../data/goalMappings");
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -20,41 +22,45 @@ const generateStudyPlan = async (req, res) => {
   });
 }
 
-    let plan = [];
-
 const userGoal = goal.toLowerCase();
 
-if (userGoal.includes("javascript")) {
-  plan = roadmaps.javascript;
-}
-else if (userGoal.includes("html")) {
-  plan = roadmaps.html;
-}
-else if (userGoal.includes("python")) {
-  plan = roadmaps.python;
-}
-else if (userGoal.includes("react")) {
-  plan = roadmaps.react;
-}
-else if (userGoal.includes("java")) {
-  plan = roadmaps.java;
-}
-else if (
-  userGoal.includes("dsa") ||
-  userGoal.includes("data structures") ||
-  userGoal.includes("algorithms") ||
-  userGoal.includes("coding interview") ||
-  userGoal.includes("leetcode")
-) {
-  plan = roadmaps.dsa;
+let plan = [];
+
+for (const key of Object.keys(goalMappings)) {
+
+  if (userGoal.includes(key)) {
+
+    plan = goalMappings[key];
+
+    break;
+
+  }
+
 }
 
-else {
+// DSA aliases
+if (
+  plan.length === 0 &&
+  (
+    userGoal.includes("leetcode") ||
+    userGoal.includes("coding interview") ||
+    userGoal.includes("data structures") ||
+    userGoal.includes("algorithms")
+  )
+) {
+  plan = goalMappings.dsa;
+}
+
+if (plan.length === 0) {
+
   return res.status(400).json({
     success: false,
     message: "Goal not supported"
   });
+
 }
+
+
     await Task.deleteMany({
   isGenerated: true
 });
@@ -101,8 +107,8 @@ if (topicsPerDay <= 3) {
 let warning = "";
 
 if (
-  difficulty === "Intensive 🟠" ||
-  difficulty === "Extreme 🔴"
+  difficulty === "intensive" ||
+  difficulty === "extreme"
 ) {
   warning =
     "This roadmap may be difficult to complete. Consider increasing the number of days.";

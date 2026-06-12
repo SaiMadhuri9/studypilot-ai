@@ -7,6 +7,19 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const progressFill =
+  document.getElementById("progressFill");
+const totalTasksEl =
+  document.getElementById("totalTasks");
+
+const completedTasksEl =
+  document.getElementById("completedTasks");
+
+const remainingTasksEl =
+  document.getElementById("remainingTasks");
+
+const progressPercentEl =
+  document.getElementById("progressPercent");
 
 function getDifficultyLabel(level) {
 
@@ -36,6 +49,36 @@ function loadTasks() {
   fetch("http://localhost:5000/api/tasks")
     .then((response) => response.json())
     .then((data) => {
+      const tasks = data.data;
+
+const totalTasks = tasks.length;
+
+const completedTasks =
+  tasks.filter(task => task.completed).length;
+
+const remainingTasks =
+  totalTasks - completedTasks;
+
+const progressPercent =
+  totalTasks === 0
+    ? 0
+    : Math.round(
+        (completedTasks / totalTasks) * 100
+      );
+      totalTasksEl.textContent =
+  totalTasks;
+
+completedTasksEl.textContent =
+  completedTasks;
+
+remainingTasksEl.textContent =
+  remainingTasks;
+
+progressPercentEl.textContent =
+  progressPercent + "%";
+
+  progressFill.style.width =
+  progressPercent + "%";
 
       data.data.forEach((task) => {
 
