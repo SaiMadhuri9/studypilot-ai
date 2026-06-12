@@ -8,6 +8,27 @@ const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
 
+function getDifficultyLabel(level) {
+
+  if (level === "easy") {
+    return "🟢 Easy";
+  }
+
+  if (level === "moderate") {
+    return "🟡 Moderate";
+  }
+
+  if (level === "intensive") {
+    return "🟠 Intensive";
+  }
+
+  if (level === "extreme") {
+    return "🔴 Extreme";
+  }
+
+  return level;
+}
+
 function loadTasks() {
 
   taskList.innerHTML = "";
@@ -19,16 +40,25 @@ function loadTasks() {
       data.data.forEach((task) => {
 
         taskList.innerHTML += `
-        <li>
-          ${task.completed ? "✅" : "❌"} ${task.title}
+        
+         <li>
+  <span class="${task.completed ? "completed" : ""}">
+  ${task.completed ? "✅" : "❌"} ${task.title}
+</span>
 
-          <button onclick="completeTask('${task._id}')">
-            Complete
-          </button>
+<span class="difficulty ${task.difficulty}">
+  ${getDifficultyLabel(task.difficulty)}
+</span>
 
-          <button onclick="deleteTask('${task._id}')">
-            Delete
-          </button>
+         <div class="task-actions">
+  <button onclick="completeTask('${task._id}')">
+    Complete
+  </button>
+
+  <button onclick="deleteTask('${task._id}')">
+    Delete
+  </button>
+</div>
         </li>
         `;
 
@@ -123,6 +153,7 @@ const days = daysInput.value;
   })
   .then((response) => response.json())
   .then((data) => {
+    studyInfo.style.display = "block";
     studyInfo.innerHTML = `
   <h3>Study Plan Info</h3>
   <p><strong>Difficulty:</strong> ${data.difficulty}</p>

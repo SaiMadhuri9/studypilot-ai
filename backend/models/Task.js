@@ -12,6 +12,12 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    difficulty: {
+    type: String,
+    default: "easy"
+  },
+  
+
 
     isGenerated: {
   type: Boolean,

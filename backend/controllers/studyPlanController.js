@@ -1,5 +1,6 @@
 console.log("STUDY PLAN CONTROLLER LOADED");
 const Task = require("../models/Task");
+const roadmaps = require("../data/roadmaps");
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -21,110 +22,65 @@ const generateStudyPlan = async (req, res) => {
 
     let plan = [];
 
-    if (goal === "learn javascript") {
-      plan =[
-  "Basics",
-  "Variables",
-  "Data Types",
-  "Operators",
-  "Conditionals",
-  "Loops",
-  "Functions",
-  "Arrays",
-  "Array Methods",
-  "Objects",
-  "Object Methods",
-  "Error Handling",
-  "DOM",
-  "Events",
-  "Local Storage",
-  "Fetch API",
-  "Promises",
-  "Async/Await",
-  "Mini Project"
-];
-    } 
-    else if (goal === "learn html") {
-      plan = [
-  "HTML Basics",
-  "Headings & Paragraphs",
-  "Lists",
-  "Links",
-  "Images",
-  "Tables",
-  "Forms",
-  "Semantic HTML",
-  "Audio & Video",
-  "HTML Entities",
-  "Iframes",
-  "Mini Project"
-];
-    } 
-    else if (goal === "learn python") {
-      plan = [
-  "Introduction",
-  "Variables",
-  "Data Types",
-  "Operators",
-  "Conditionals",
-  "Loops",
-  "Functions",
-  "Lists",
-  "Tuples",
-  "Dictionaries",
-  "Sets",
-  "File Handling",
-  "Exception Handling",
-  "Modules",
-  "OOP",
-  "Mini Project"
-];
-    } 
-    else {
-      return res.status(400).json({
-        success: false,
-        message: "Goal not supported"
-      });
-    }
+const userGoal = goal.toLowerCase();
+
+if (userGoal.includes("javascript")) {
+  plan = roadmaps.javascript;
+}
+else if (userGoal.includes("html")) {
+  plan = roadmaps.html;
+}
+else if (userGoal.includes("python")) {
+  plan = roadmaps.python;
+}
+else if (userGoal.includes("react")) {
+  plan = roadmaps.react;
+}
+else if (userGoal.includes("java")) {
+  plan = roadmaps.java;
+}
+else if (
+  userGoal.includes("dsa") ||
+  userGoal.includes("data structures") ||
+  userGoal.includes("algorithms") ||
+  userGoal.includes("coding interview") ||
+  userGoal.includes("leetcode")
+) {
+  plan = roadmaps.dsa;
+}
+
+else {
+  return res.status(400).json({
+    success: false,
+    message: "Goal not supported"
+  });
+}
     await Task.deleteMany({
   isGenerated: true
 });
    const topicsPerDay = Math.ceil(plan.length / days);
-   const remainingDays = days - plan.length;
-   let extraTasks = [];
-   if (remainingDays === 1) {
-  extraTasks = ["Final Review"];
+   const studyDaysNeeded =
+  Math.ceil(plan.length / topicsPerDay);
+
+const remainingDays =
+  days - studyDaysNeeded;
+
+  let extraTasks = [];
+
+for (let i = 1; i <= remainingDays; i++) {
+
+  if (i === remainingDays) {
+    extraTasks.push("Final Review");
+  }
+  else if (i === remainingDays - 1) {
+    extraTasks.push("Mock Test");
+  }
+  else {
+    extraTasks.push("Revision");
+  }
+
 }
-else if (remainingDays === 2) {
-  extraTasks = [
-    "Revision",
-    "Final Review"
-  ];
-}
-else if (remainingDays === 3) {
-  extraTasks = [
-    "Revision",
-    "Mock Test",
-    "Final Review"
-  ];
-}
-else if (remainingDays === 4) {
-  extraTasks = [
-    "Revision",
-    "Practice",
-    "Mock Test",
-    "Final Review"
-  ];
-}
-else if (remainingDays === 5) {
-  extraTasks = [
-    "Revision",
-    "Revision",
-    "Practice",
-    "Mock Test",
-    "Final Review"
-  ];
-}
+
 
 
 
@@ -133,13 +89,13 @@ else if (remainingDays === 5) {
 let difficulty = "";
 
 if (topicsPerDay <= 3) {
-  difficulty = "Easy 🟢";
+  difficulty = "easy";
 } else if (topicsPerDay <= 5) {
-  difficulty = "Moderate 🟡";
+  difficulty = "moderate";
 } else if (topicsPerDay <= 8) {
-  difficulty = "Intensive 🟠";
+  difficulty = "intensive";
 } else {
-  difficulty = "Extreme 🔴";
+  difficulty = "extreme";
 }
 
 let warning = "";
@@ -154,6 +110,57 @@ if (
 
 
 let currentTopicIndex = 0;
+function getTaskDifficulty(topic) {
+
+  if (
+    topic.includes("Basics") ||
+    topic.includes("Variables") ||
+    topic.includes("Data Types") ||
+    topic.includes("Operators")
+  ) {
+    return "easy";
+  }
+
+  if (
+  topic.includes("Conditionals") ||
+  topic.includes("Loops") ||
+  topic.includes("Functions") ||
+  topic.includes("Arrays") ||
+  topic.includes("Objects") ||
+  topic.includes("Array Methods") ||
+  topic.includes("Object Methods") ||
+  topic.includes("Error Handling") ||
+   topic.includes("Components") ||
+  topic.includes("JSX") ||
+  topic.includes("Props") ||
+  topic.includes("State") ||
+  topic.includes("Forms") ||
+  topic.includes("Routing")
+) {
+  return "moderate";
+}
+
+  if (
+    topic.includes("DOM") ||
+    topic.includes("Events") ||
+    topic.includes("Fetch API") ||
+    topic.includes("Promises") ||
+    topic.includes("Async/Await") ||
+    topic.includes("useEffect") ||
+  topic.includes("API Calls") ||
+  topic.includes("Context API")
+  ) {
+    return "intensive";
+  }
+
+  if (
+    topic.includes("Mini Project")
+  ) {
+    return "extreme";
+  }
+
+  return "easy";
+}
 
 for (let day = 1; day <= days; day++) {
 
@@ -172,10 +179,14 @@ for (let day = 1; day <= days; day++) {
   }
 
   if (dayTopics.length > 0) {
-  await Task.create({
-    title: `Day ${day} - ${dayTopics.join(", ")}`,
-    isGenerated: true
-  });
+  const taskDifficulty =
+  getTaskDifficulty(dayTopics.join(", "));
+
+await Task.create({
+  title: `Day ${day} - ${dayTopics.join(", ")}`,
+  difficulty: taskDifficulty,
+  isGenerated: true
+});
 }
 else {
 
@@ -183,10 +194,10 @@ else {
     day - (days - remainingDays) - 1;
 
   await Task.create({
-    title: `Day ${day} - ${extraTasks[extraTaskIndex]}`,
-    isGenerated: true
-  });
-
+  title: `Day ${day} - ${extraTasks[extraTaskIndex]}`,
+  difficulty: "moderate",
+  isGenerated: true
+});
 }
 
 }

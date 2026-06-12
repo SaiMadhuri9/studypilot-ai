@@ -1,0 +1,114 @@
+const roadmaps = {
+
+  javascript: [
+    "Basics",
+    "Variables",
+    "Data Types",
+    "Operators",
+    "Conditionals",
+    "Loops",
+    "Functions",
+    "Arrays",
+    "Array Methods",
+    "Objects",
+    "Object Methods",
+    "Error Handling",
+    "DOM",
+    "Events",
+    "Local Storage",
+    "Fetch API",
+    "Promises",
+    "Async/Await",
+    "Mini Project"
+  ],
+
+  html: [
+    "HTML Basics",
+    "Headings & Paragraphs",
+    "Lists",
+    "Links",
+    "Images",
+    "Tables",
+    "Forms",
+    "Semantic HTML",
+    "Audio & Video",
+    "HTML Entities",
+    "Iframes",
+    "Mini Project"
+  ],
+
+  python: [
+    "Introduction",
+    "Variables",
+    "Data Types",
+    "Operators",
+    "Conditionals",
+    "Loops",
+    "Functions",
+    "Lists",
+    "Tuples",
+    "Dictionaries",
+    "Sets",
+    "File Handling",
+    "Exception Handling",
+    "Modules",
+    "OOP",
+    "Mini Project"
+  ],
+
+  react: [
+  "JS Refresher",
+  "ES6 Features",
+  "Components",
+  "JSX",
+  "Props",
+  "State",
+  "Events",
+  "Forms",
+  "useEffect",
+  "API Calls",
+  "Routing",
+  "Context API",
+  "Mini Project"
+],
+java: [
+  "Introduction",
+  "Variables",
+  "Data Types",
+  "Operators",
+  "Conditionals",
+  "Loops",
+  "Methods",
+  "Arrays",
+  "Strings",
+  "OOP",
+  "Inheritance",
+  "Polymorphism",
+  "Exception Handling",
+  "Collections Framework",
+  "Mini Project"
+],
+dsa: [
+  "Time Complexity",
+  "Arrays",
+  "Strings",
+  "Recursion",
+  "Sorting",
+  "Binary Search",
+  "Linked Lists",
+  "Stacks",
+  "Queues",
+  "Trees",
+  "Binary Search Trees",
+  "Heaps",
+  "Hashing",
+  "Graphs",
+  "Dynamic Programming",
+  "Greedy Algorithms",
+  "Mini Project"
+]
+
+};
+
+
+module.exports = roadmaps;
