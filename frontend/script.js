@@ -59,6 +59,14 @@ function loadTasks() {
     .then((data) => {
       const tasks = data.data;
       allTasks = tasks;
+      const welcomeBox =
+  document.getElementById("welcomeBox");
+
+if (tasks.length > 0) {
+  welcomeBox.style.display = "none";
+} else {
+  welcomeBox.style.display = "block";
+}
       const generatedTasks =
   tasks.filter(task => task.isGenerated);
 
@@ -117,6 +125,7 @@ if (achievementTitle === "") {
 `;
 }
 
+
 const streak =
   Number(
     localStorage.getItem("studyStreak")
@@ -125,7 +134,19 @@ const streak =
 const dayText =
   streak === 1 ? "Day" : "Days";
 
-streakBox.style.display = "block";
+
+  if (tasks.length === 0) {
+
+  localStorage.removeItem("studyStreak");
+  localStorage.removeItem("lastStudyDate");
+
+  streakBox.style.display = "none";
+
+} else {
+
+  streakBox.style.display = "block";
+
+}
 
 streakBox.innerHTML = `
   <h3>🔥 Study Streak</h3>
@@ -234,6 +255,7 @@ progressPercentEl.textContent =
 loadTasks();
 
 
+
 async function deleteTask(id) {
 
   await fetch(`http://localhost:5000/api/tasks/${id}`, {
@@ -338,25 +360,27 @@ function updateStudyStreak() {
 
 }
 
-const resetStreakBtn =
-  document.getElementById("resetStreakBtn");
+// const resetStreakBtn =
+//   document.getElementById("resetStreakBtn");
 
-resetStreakBtn.addEventListener(
-  "click",
-  () => {
+// if (resetStreakBtn) {
+//   resetStreakBtn.addEventListener(
+//     "click",
+//     () => {
 
-    localStorage.removeItem(
-      "studyStreak"
-    );
+//     localStorage.removeItem(
+//       "studyStreak"
+//     );
 
-    localStorage.removeItem(
-      "lastStudyDate"
-    );
+//     localStorage.removeItem(
+//       "lastStudyDate"
+//     );
 
-    loadTasks();
+//     loadTasks();
 
-  }
-);
+//   }
+// );
+// }
 
 
 
@@ -456,7 +480,11 @@ const days = daysInput.value;
 
   loadTasks();
 
+
+document.getElementById("welcomeBox").style.display = "none";
+  
 });
+
 
 });
 
