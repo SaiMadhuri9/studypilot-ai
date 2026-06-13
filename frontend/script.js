@@ -1,5 +1,7 @@
 console.log("StudyPilot Frontend Loaded");
 
+let allTasks = [];
+
 const taskList = document.getElementById("taskList");
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
@@ -7,6 +9,8 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const streakBox =
+  document.getElementById("streakBox");
 const achievementBox =
   document.getElementById("achievementBox");
 const roadmapInfo =
@@ -54,6 +58,7 @@ function loadTasks() {
     .then((response) => response.json())
     .then((data) => {
       const tasks = data.data;
+      allTasks = tasks;
       const generatedTasks =
   tasks.filter(task => task.isGenerated);
 
@@ -77,34 +82,61 @@ const roadmapProgress =
   roadmapInfo.style.display = "block";
 }
 
-let achievement = "";
+let achievementTitle = "";
+let achievementDescription = "";
 
 if (completedGeneratedTasks >= 1) {
-  achievement =
-    "🏆 Roadmap Beginner - Completed your first study task!";
+  achievementTitle = "🥉 Roadmap Beginner";
+  achievementDescription =
+    "Completed your first study task.";
 }
 
 if (roadmapProgress >= 50) {
-  achievement =
-    "🥈 Halfway Hero - Reached 50% roadmap completion!";
+  achievementTitle = "🥈 Halfway Hero";
+  achievementDescription =
+    "Reached 50% roadmap completion.";
 }
 
 if (roadmapProgress === 100) {
-  achievement =
-    "🥇 Roadmap Master - Completed your roadmap!";
+  achievementTitle = "🥇 Roadmap Master";
+  achievementDescription =
+    "Completed your roadmap.";
 }
 
-if (achievement === "") {
+if (achievementTitle === "") {
   achievementBox.style.display = "none";
 } else {
   achievementBox.style.display = "block";
 
-  achievementBox.innerHTML = `
-    <h3>Achievement</h3>
-    <p>${achievement}</p>
-  `;
+ achievementBox.innerHTML = `
+  <h3>🏆 Achievement Unlocked</h3>
+
+  <h2>${achievementTitle}</h2>
+
+  <p>${achievementDescription}</p>
+`;
 }
 
+const streak =
+  Number(
+    localStorage.getItem("studyStreak")
+  ) || 0;
+
+const dayText =
+  streak === 1 ? "Day" : "Days";
+
+streakBox.style.display = "block";
+
+streakBox.innerHTML = `
+  <h3>🔥 Study Streak</h3>
+
+  <p>
+    Current Streak:
+    <strong>
+      ${streak} ${dayText}
+    </strong>
+  </p>
+`;
 
       console.log("Generated Tasks:", generatedTasks.length);
 console.log("Roadmap Progress:", roadmapProgress);
@@ -164,26 +196,35 @@ progressPercentEl.textContent =
 
         taskList.innerHTML += `
         
-         <li>
-  <span class="${task.completed ? "completed" : ""}">
-  ${task.completed ? "✅" : "❌"} ${task.title}
-</span>
+<li>
 
-<span class="difficulty ${task.difficulty}">
-  ${getDifficultyLabel(task.difficulty)}
-</span>
+  <div class="task-content">
 
-         <div class="task-actions">
-  <button onclick="completeTask('${task._id}')">
-    Complete
-  </button>
+    <div class="task-title ${task.completed ? "completed" : ""}">
+      ${task.completed ? "✅" : "❌"}
+      ${task.title}
+    </div>
 
-  <button onclick="deleteTask('${task._id}')">
-    Delete
-  </button>
-</div>
-        </li>
-        `;
+    <span class="difficulty ${task.difficulty}">
+      ${getDifficultyLabel(task.difficulty)}
+    </span>
+
+  </div>
+
+  <div class="task-actions">
+
+    <button onclick="completeTask('${task._id}')">
+      Complete
+    </button>
+
+    <button onclick="deleteTask('${task._id}')">
+      Delete
+    </button>
+
+  </div>
+
+</li>      
+  `;
 
       });
 
@@ -231,8 +272,100 @@ async function deleteTask(id) {
 
 });
 
+function updateStudyStreak() {
+
+  const today = new Date();
+
+  const todayString =
+    today.toDateString();
+
+  const lastStudyDate =
+    localStorage.getItem(
+      "lastStudyDate"
+    );
+
+  let streak =
+    parseInt(
+      localStorage.getItem(
+        "studyStreak"
+      )
+    ) || 0;
+
+  if (!lastStudyDate) {
+
+    streak = 1;
+
+  } else {
+
+    const lastDate =
+      new Date(lastStudyDate);
+
+    const differenceInDays =
+      Math.floor(
+        (
+          today - lastDate
+        ) /
+        (1000 * 60 * 60 * 24)
+      );
+
+    if (differenceInDays === 0) {
+
+      return;
+
+    } else if (
+      differenceInDays === 1
+    ) {
+
+      streak++;
+
+    } else {
+
+      streak = 1;
+
+    }
+
+  }
+
+  localStorage.setItem(
+    "studyStreak",
+    streak
+  );
+
+  localStorage.setItem(
+    "lastStudyDate",
+    todayString
+  );
+
+}
+
+const resetStreakBtn =
+  document.getElementById("resetStreakBtn");
+
+resetStreakBtn.addEventListener(
+  "click",
+  () => {
+
+    localStorage.removeItem(
+      "studyStreak"
+    );
+
+    localStorage.removeItem(
+      "lastStudyDate"
+    );
+
+    loadTasks();
+
+  }
+);
+
+
 
 async function completeTask(id) {
+
+  const task =
+    allTasks.find(
+      task => task._id === id
+    );
 
   await fetch(`http://localhost:5000/api/tasks/${id}`, {
     method: "PUT",
@@ -243,6 +376,14 @@ async function completeTask(id) {
       completed: true
     })
   });
+
+  if (
+    task &&
+    task.isGenerated &&
+    !task.completed
+  ) {
+    updateStudyStreak();
+  }
 
   loadTasks();
 

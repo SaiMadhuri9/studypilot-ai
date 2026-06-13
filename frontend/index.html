@@ -7,63 +7,75 @@
 <body>
 
     <div class="hero">
-    <h1>StudyPilot AI</h1>
-    <p>Your AI-powered study roadmap generator</p>
-</div>
-<div id="progressDashboard" class="dashboard-card">
+        <h1>🚀 StudyPilot AI</h1>
 
-  <h3>📊 Progress Dashboard</h3>
-
-  <p>Total Tasks: <span id="totalTasks">0</span></p>
-
-  <p>Completed Tasks: <span id="completedTasks">0</span></p>
-
-  <p>Remaining Tasks: <span id="remainingTasks">0</span></p>
-
-  <p>Progress: <span id="progressPercent">0%</span></p>
-
-  <div class="progress-bar">
-  <div id="progressFill"></div>
-</div>
-
-</div>
-    <div class="controls">
-
-        <input
-            type="number"
-            id="daysInput"
-            placeholder="Enter number of days"
-        >
-
-        <input
-            type="text"
-            id="goalInput"
-            placeholder="Enter learning goal"
-        >
-
-        <button id="generateBtn">
-            Generate Plan
-        </button>
-
-        <input
-            type="text"
-            id="taskInput"
-            placeholder="Enter task"
-        >
-
-        <button id="addBtn">
-            Add Task
-        </button>
-
+        <p>
+            Build personalized learning roadmaps,
+            track progress, and stay consistent.
+        </p>
     </div>
 
-    <div id="studyInfo"></div>
+    <div class="container">
 
-    <div id="roadmapInfo"></div>
+        <div id="progressDashboard" class="dashboard-card">
 
-    <div id="achievementBox"></div>
+            <h3>📊 Progress Dashboard</h3>
 
-    <ul id="taskList"></ul>
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+
+            <p>Completed Tasks: <span id="completedTasks">0</span></p>
+
+            <p>Remaining Tasks: <span id="remainingTasks">0</span></p>
+
+            <p>Progress: <span id="progressPercent">0%</span></p>
+
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+
+        </div>
+
+        <div class="controls">
+
+            <input
+                type="number"
+                id="daysInput"
+                placeholder="📅 Enter number of days"
+            >
+
+            <input
+                type="text"
+                id="goalInput"
+                placeholder="🎯 Enter learning goal"
+            >
+
+            <button id="generateBtn">
+                Generate Plan
+            </button>
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="📝 Enter task"
+            >
+
+            <button id="addBtn">
+                Add Task
+            </button>
+
+        </div>
+
+        <div id="studyInfo"></div>
+
+        <div id="roadmapInfo"></div>
+
+        <div id="achievementBox"></div>
+
+        <div id="streakBox"></div>
+
+        <ul id="taskList"></ul>
+
+    </div>
 
     <script src="script.js"></script>
 

@@ -1,15 +1,19 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f7fb;
+
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #eef2ff
+  );
+
   margin: 0;
   padding: 40px;
+  
+
+  min-height: 100vh;
 }
 
-h1 {
-  text-align: center;
-  font-size: 48px;
-  margin-bottom: 10px;
-}
 
 .controls {
   display: flex;
@@ -84,18 +88,33 @@ button:hover {
 
 .hero {
   text-align: center;
-  margin-bottom: 30px;
+  padding-top: 60px;
+
+
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 48px;
+
+  margin-bottom: 10px;
+
+  font-weight: 700;
 }
 
 .hero p {
-  color: #666;
-  margin-top: -10px;
-  font-size: 18px;
+  font-size: 20px;
+
+  color: #64748b;
+
+  max-width: 600px;
+
+  margin: 0 auto;
 }
 
 .completed {
   text-decoration: line-through;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .difficulty{
@@ -195,4 +214,133 @@ button:hover {
   border-radius: 12px;
 
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+#achievementBox h2 {
+  margin: 10px 0;
+}
+
+#achievementBox p {
+  color: #555;
+}
+
+#achievementBox {
+  border-left: 6px solid #f59e0b;
+}
+
+#streakBox {
+  display: none;
+
+  max-width: 900px;
+  margin: 0 auto 25px auto;
+
+  background: white;
+  padding: 20px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+  border-left: 6px solid #ef4444;
+}
+
+
+.dashboard-card,
+#studyInfo,
+#roadmapInfo,
+#achievementBox,
+#streakBox,
+#taskList li {
+  padding: 30px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  
+
+}
+
+.dashboard-card:hover,
+#studyInfo:hover,
+#roadmapInfo:hover,
+#achievementBox:hover,
+#streakBox:hover,
+#taskList li:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.12);
+
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 14px;
+  border: 1px solid #dbeafe;
+
+  border-radius: 10px;
+
+  width: 220px;
+
+  font-size: 14px;
+
+  transition: 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+button {
+  padding: 14px 20px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+#taskList li {
+  padding: 20px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
