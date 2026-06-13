@@ -83,6 +83,8 @@ if (plan.length === 0) {
   isGenerated: true
 });
    const topicsPerDay = Math.ceil(plan.length / days);
+   
+
    const studyDaysNeeded =
   Math.ceil(plan.length / topicsPerDay);
 
@@ -122,6 +124,11 @@ if (topicsPerDay <= 3) {
   difficulty = "extreme";
 }
 
+const estimatedHoursPerDay =
+(
+  topicsPerDay *
+  getEstimatedHours(difficulty)
+).toFixed(1);
 let warning = "";
 
 if (
@@ -186,6 +193,27 @@ function getTaskDifficulty(topic) {
   return "easy";
 }
 
+function getEstimatedHours(level) {
+
+  if (level === "easy") {
+    return 0.5;
+  }
+
+  if (level === "moderate") {
+    return 1;
+  }
+
+  if (level === "intensive") {
+    return 1.5;
+  }
+
+  if (level === "extreme") {
+    return 2;
+  }
+
+  return 0.5;
+}
+
 for (let day = 1; day <= days; day++) {
 
   let dayTopics = [];
@@ -226,14 +254,14 @@ else {
 
 }
 
-    res.status(200).json({
+   res.status(200).json({
   success: true,
   plan,
   topicsPerDay,
+  estimatedHoursPerDay,
   difficulty,
   warning
 });
-
   } catch (error) {
     res.status(500).json({
       success: false,

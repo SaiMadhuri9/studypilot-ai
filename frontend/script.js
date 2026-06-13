@@ -7,6 +7,10 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const achievementBox =
+  document.getElementById("achievementBox");
+const roadmapInfo =
+  document.getElementById("roadmapInfo");
 const progressFill =
   document.getElementById("progressFill");
 const totalTasksEl =
@@ -50,7 +54,83 @@ function loadTasks() {
     .then((response) => response.json())
     .then((data) => {
       const tasks = data.data;
+      const generatedTasks =
+  tasks.filter(task => task.isGenerated);
 
+const completedGeneratedTasks =
+  generatedTasks.filter(
+    task => task.completed
+  ).length;
+
+const roadmapProgress =
+  generatedTasks.length === 0
+    ? 0
+    : Math.round(
+        (
+          completedGeneratedTasks /
+          generatedTasks.length
+        ) * 100
+      );
+      if (generatedTasks.length === 0) {
+  roadmapInfo.style.display = "none";
+} else {
+  roadmapInfo.style.display = "block";
+}
+
+let achievement = "";
+
+if (completedGeneratedTasks >= 1) {
+  achievement =
+    "🏆 Roadmap Beginner - Completed your first study task!";
+}
+
+if (roadmapProgress >= 50) {
+  achievement =
+    "🥈 Halfway Hero - Reached 50% roadmap completion!";
+}
+
+if (roadmapProgress === 100) {
+  achievement =
+    "🥇 Roadmap Master - Completed your roadmap!";
+}
+
+if (achievement === "") {
+  achievementBox.style.display = "none";
+} else {
+  achievementBox.style.display = "block";
+
+  achievementBox.innerHTML = `
+    <h3>Achievement</h3>
+    <p>${achievement}</p>
+  `;
+}
+
+
+      console.log("Generated Tasks:", generatedTasks.length);
+console.log("Roadmap Progress:", roadmapProgress);
+
+     roadmapInfo.innerHTML = `
+  <h3>Roadmap Progress</h3>
+
+  <p>
+    <strong>Completed Topics:</strong>
+    ${completedGeneratedTasks}
+    /
+    ${generatedTasks.length}
+  </p>
+
+  <p>
+    <strong>Progress:</strong>
+    ${roadmapProgress}%
+  </p>
+
+  <div class="roadmap-progress-bar">
+    <div
+      class="roadmap-progress-fill"
+      style="width: ${roadmapProgress}%"
+    ></div>
+  </div>
+`;
 const totalTasks = tasks.length;
 
 const completedTasks =
@@ -211,11 +291,25 @@ const days = daysInput.value;
   studyInfo.style.display = "block";
 
   studyInfo.innerHTML = `
-    <h3>Study Plan Info</h3>
-    <p><strong>Difficulty:</strong> ${data.difficulty}</p>
-    <p><strong>Topics Per Day:</strong> ${data.topicsPerDay}</p>
-    <p>${data.warning}</p>
-  `;
+  <h3>Study Plan Info</h3>
+
+  <p>
+    <strong>Difficulty:</strong>
+    ${getDifficultyLabel(data.difficulty)}
+  </p>
+
+  <p>
+    <strong>Topics Per Day:</strong>
+    ${data.topicsPerDay}
+  </p>
+
+  <p>
+    <strong>Estimated Study Time:</strong>
+    ${data.estimatedHoursPerDay} hours/day
+  </p>
+
+  <p>${data.warning}</p>
+`;
 
   goalInput.value = "";
 
