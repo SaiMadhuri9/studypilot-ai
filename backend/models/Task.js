@@ -8,6 +8,11 @@ const taskSchema = new mongoose.Schema(
       trim: true,
       minlength: [3, "Task title must be at least 3 characters"],
     },
+    goal: {
+  type: String,
+  required: true,
+  trim: true,
+},
     completed: {
       type: Boolean,
       default: false,

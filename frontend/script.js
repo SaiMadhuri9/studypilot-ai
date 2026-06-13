@@ -9,6 +9,8 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const roadmapSelect =
+  document.getElementById("roadmapSelect");
 const streakBox =
   document.getElementById("streakBox");
 const achievementBox =
@@ -50,11 +52,17 @@ function getDifficultyLabel(level) {
   return level;
 }
 
-function loadTasks() {
+function loadTasks(goal = "") {
 
   taskList.innerHTML = "";
 
-  fetch("http://localhost:5000/api/tasks")
+ let url = "http://localhost:5000/api/tasks";
+
+if (goal) {
+  url += `?goal=${goal}`;
+}
+
+fetch(url)
     .then((response) => response.json())
     .then((data) => {
       const tasks = data.data;
@@ -253,7 +261,7 @@ progressPercentEl.textContent =
 
 }
 loadTasks();
-
+loadGoals();
 
 
 async function deleteTask(id) {
@@ -262,7 +270,7 @@ async function deleteTask(id) {
     method: "DELETE"
   });
 
-  loadTasks();
+  loadTasks(roadmapSelect.value);
 
 }
 
@@ -409,7 +417,7 @@ async function completeTask(id) {
     updateStudyStreak();
   }
 
-  loadTasks();
+ loadTasks(roadmapSelect.value);
 
 }
 
@@ -487,4 +495,39 @@ document.getElementById("welcomeBox").style.display = "none";
 
 
 });
+
+roadmapSelect.addEventListener(
+  "change",
+  () => {
+
+    const selectedGoal =
+      roadmapSelect.value;
+
+    loadTasks(selectedGoal);
+
+  }
+);
+
+function loadGoals() {
+
+  fetch("http://localhost:5000/api/tasks/goals")
+    .then(response => response.json())
+    .then(data => {
+
+      roadmapSelect.innerHTML =
+        `<option value="">All Roadmaps</option>`;
+
+      data.data.forEach(goal => {
+
+        roadmapSelect.innerHTML += `
+          <option value="${goal}">
+            ${goal}
+          </option>
+        `;
+
+      });
+
+    });
+
+}
 

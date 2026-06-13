@@ -79,9 +79,9 @@ if (plan.length === 0) {
 }
 
 
-    await Task.deleteMany({
-  isGenerated: true
-});
+//     await Task.deleteMany({
+//   isGenerated: true
+// });
    const topicsPerDay = Math.ceil(plan.length / days);
    
 
@@ -236,6 +236,7 @@ for (let day = 1; day <= days; day++) {
 
 await Task.create({
   title: `Day ${day} - ${dayTopics.join(", ")}`,
+  goal: goal,
   difficulty: taskDifficulty,
   isGenerated: true
 });
@@ -245,8 +246,9 @@ else {
   const extraTaskIndex =
     day - (days - remainingDays) - 1;
 
-  await Task.create({
+ await Task.create({
   title: `Day ${day} - ${extraTasks[extraTaskIndex]}`,
+  goal: goal,
   difficulty: "moderate",
   isGenerated: true
 });

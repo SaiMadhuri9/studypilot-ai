@@ -6,6 +6,7 @@ console.log("taskRoutes loaded");
 
 const {
   getTasks,
+  getGoals,
   getTaskById,
   createTask,
   updateTask,
@@ -16,6 +17,7 @@ const {
 
 
 router.get("/", getTasks);
+router.get("/goals", getGoals);
 router.get("/:id", getTaskById);
 router.post("/", createTask);
 router.post("/study-plan", generateStudyPlan);

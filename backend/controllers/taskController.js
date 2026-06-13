@@ -31,6 +31,12 @@ const getTasks = async (req, res) => {
 if (req.query.completed === "false") {
   filter.completed = false;
 }
+if (req.query.goal) {
+  filter.goal = {
+    $regex: req.query.goal,
+    $options: "i"
+  };
+}
     const tasks = await Task.find(filter);
 
     res.status(200).json({
@@ -254,10 +260,30 @@ res.json({
 });
 };
 
+const getGoals = async (req, res) => {
+  try {
+
+    const goals = await Task.distinct("goal");
+
+    res.status(200).json({
+      success: true,
+      data: goals
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
 
 
 module.exports = {
   getTasks,
+  getGoals,
   getTaskById,
   createTask,
   updateTask,
