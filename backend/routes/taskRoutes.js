@@ -7,6 +7,7 @@ console.log("taskRoutes loaded");
 const {
   getTasks,
   getGoals,
+  getRoadmaps,
   getTaskById,
   createTask,
   updateTask,
@@ -14,10 +15,9 @@ const {
   generateStudyPlan,
 } = require("../controllers/taskController");
 
-
-
 router.get("/", getTasks);
 router.get("/goals", getGoals);
+router.get("/roadmaps", getRoadmaps);
 router.get("/:id", getTaskById);
 router.post("/", createTask);
 router.post("/study-plan", generateStudyPlan);

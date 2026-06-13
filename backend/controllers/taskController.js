@@ -279,11 +279,58 @@ const getGoals = async (req, res) => {
 
   }
 };
+const getRoadmaps = async (req, res) => {
+  try {
+
+    const goals = await Task.distinct("goal");
+
+    const roadmaps = [];
+
+    for (const goal of goals) {
+
+      const tasks = await Task.find({ goal });
+
+      const totalTasks = tasks.length;
+
+      const completedTasks =
+        tasks.filter(task => task.completed).length;
+
+      const progress =
+        totalTasks === 0
+          ? 0
+          : Math.round(
+              (completedTasks / totalTasks) * 100
+            );
+
+      roadmaps.push({
+        goal,
+        totalTasks,
+        completedTasks,
+        progress
+      });
+
+    }
+
+    res.status(200).json({
+      success: true,
+      data: roadmaps
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
 
 
 module.exports = {
   getTasks,
   getGoals,
+  getRoadmaps,
   getTaskById,
   createTask,
   updateTask,

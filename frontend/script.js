@@ -9,6 +9,8 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const roadmapCards =
+  document.getElementById("roadmapCards");
 const roadmapSelect =
   document.getElementById("roadmapSelect");
 const streakBox =
@@ -260,9 +262,10 @@ progressPercentEl.textContent =
     });
 
 }
-loadTasks();
-loadGoals();
 
+loadGoals();
+loadTasks();
+loadRoadmapCards();
 
 async function deleteTask(id) {
 
@@ -271,8 +274,10 @@ async function deleteTask(id) {
   });
 
   loadTasks(roadmapSelect.value);
+  loadRoadmapCards();
 
 }
+
 
 
   addBtn.addEventListener("click", () => {
@@ -417,10 +422,10 @@ async function completeTask(id) {
     updateStudyStreak();
   }
 
- loadTasks(roadmapSelect.value);
+  loadTasks(roadmapSelect.value);
+  loadRoadmapCards();
 
 }
-
 generateBtn.addEventListener("click", () => {
 
  
@@ -484,10 +489,11 @@ const days = daysInput.value;
   <p>${data.warning}</p>
 `;
 
-  goalInput.value = "";
+goalInput.value = "";
 
-  loadTasks();
-
+loadTasks();
+loadGoals();
+loadRoadmapCards();
 
 document.getElementById("welcomeBox").style.display = "none";
   
@@ -523,6 +529,69 @@ function loadGoals() {
           <option value="${goal}">
             ${goal}
           </option>
+        `;
+
+      });
+
+    });
+
+}
+
+function loadRoadmapCards() {
+
+  fetch(
+    "http://localhost:5000/api/tasks/roadmaps"
+  )
+    .then(response => response.json())
+    .then(data => {
+
+      roadmapCards.innerHTML = "";
+
+      data.data.forEach(roadmap => {
+
+        roadmapCards.innerHTML += `
+        
+        <div
+  class="roadmap-card"
+  onclick="
+    roadmapSelect.value='${roadmap.goal}';
+    loadTasks('${roadmap.goal}');
+  "
+>
+
+          <h3>
+  ${
+    roadmap.goal
+      .split(" ")
+      .map(
+        word =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ")
+  }
+</h3>
+
+          <p>
+            ${roadmap.completedTasks}
+            /
+            ${roadmap.totalTasks}
+            Tasks Completed
+          </p>
+
+          <div class="roadmap-progress-bar">
+  <div
+    class="roadmap-progress-fill"
+    style="width:${roadmap.progress}%"
+  ></div>
+</div>
+
+<p>
+  ${roadmap.progress}% Complete
+</p>
+
+        </div>
+
         `;
 
       });
