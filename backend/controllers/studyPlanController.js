@@ -4,6 +4,8 @@ const Task = require("../models/Task");
 const roadmaps = require("../data/roadmaps");
 const goalMappings = require("../data/goalMappings");
 const aliases = require("../data/aliases");
+const generateCustomRoadmap =
+require("../data/customRoadmaps");
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -59,6 +61,16 @@ for (const roadmapKey of Object.keys(aliases)) {
 
 }
 
+
+
+if (plan.length === 0) {
+  const customPlan =
+    generateCustomRoadmap(goal);
+
+  if (customPlan) {
+    plan = customPlan;
+  }
+}
 
 if (plan.length === 0) {
 
