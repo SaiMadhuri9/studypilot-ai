@@ -54,10 +54,12 @@ if (req.query.goal) {
 
 const createTask = async (req, res) => {
   try {
-    const { title } = req.body;
+
+    const { title, goal } = req.body;
 
     const newTask = await Task.create({
       title,
+      goal
     });
 
     res.status(201).json({
@@ -80,7 +82,6 @@ const createTask = async (req, res) => {
     });
   }
 };
-
 const deleteTask = async (req, res) => {
   try {
 

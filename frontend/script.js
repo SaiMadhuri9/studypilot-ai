@@ -9,6 +9,15 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const loadingBox =
+  document.getElementById("loadingBox");
+const assistantDays =
+  document.getElementById("assistantDays");
+const assistantInput =
+  document.getElementById("assistantInput");
+
+const assistantBtn =
+  document.getElementById("assistantBtn");
 const roadmapCards =
   document.getElementById("roadmapCards");
 const roadmapSelect =
@@ -287,13 +296,14 @@ async function deleteTask(id) {
     return;
   }
 
- fetch("http://localhost:5000/api/tasks", {
+fetch("http://localhost:5000/api/tasks", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    title: taskInput.value
+    title: taskInput.value,
+    goal: roadmapSelect.value || "General"
   })
 })
 .then((response) => response.json())
@@ -440,6 +450,7 @@ const days = daysInput.value;
   alert("Please enter number of days");
   return;
 }
+loadingBox.style.display = "block";
 
   fetch("http://localhost:5000/api/studyplan/generate", {
     method: "POST",
@@ -454,8 +465,10 @@ const days = daysInput.value;
   })
 .then((response) => response.json())
 .then((data) => {
+  loadingBox.style.display = "none";
 
   if (!data.success) {
+    loadingBox.style.display = "none";
 
     alert(
       data.message +
@@ -543,60 +556,103 @@ function loadRoadmapCards() {
     "http://localhost:5000/api/tasks/roadmaps"
   )
     .then(response => response.json())
-    .then(data => {
+.then(data => {
 
-      roadmapCards.innerHTML = "";
+  roadmapCards.innerHTML = "";
 
-      data.data.forEach(roadmap => {
+  data.data.forEach(roadmap => {
 
-        roadmapCards.innerHTML += `
-        
+    roadmapCards.innerHTML += `
+
+    <div
+      class="roadmap-card"
+      onclick="
+        roadmapSelect.value='${roadmap.goal}';
+        loadTasks('${roadmap.goal}');
+      "
+    >
+
+      <div class="roadmap-header">
+
+        <span class="roadmap-icon">
+  ${getRoadmapIcon(roadmap.goal)}
+</span>
+
+        <h3>
+         ${
+      roadmap.goal
+        .split(" ")
+        .map(
+          word =>
+            word.charAt(0).toUpperCase() +
+            word.slice(1)
+        )
+        .join(" ")
+    }
+        </h3>
+
+      </div>
+
+      <div class="roadmap-progress-bar">
         <div
-  class="roadmap-card"
-  onclick="
-    roadmapSelect.value='${roadmap.goal}';
-    loadTasks('${roadmap.goal}');
-  "
->
+          class="roadmap-progress-fill"
+          style="width:${roadmap.progress}%"
+        ></div>
+      </div>
 
-          <h3>
-  ${
-    roadmap.goal
-      .split(" ")
-      .map(
-        word =>
-          word.charAt(0).toUpperCase() +
-          word.slice(1)
-      )
-      .join(" ")
-  }
-</h3>
+      <p class="roadmap-tasks">
+        ${roadmap.completedTasks}
+        /
+        ${roadmap.totalTasks}
+        Tasks Completed
+      </p>
 
-          <p>
-            ${roadmap.completedTasks}
-            /
-            ${roadmap.totalTasks}
-            Tasks Completed
-          </p>
+     
 
-          <div class="roadmap-progress-bar">
-  <div
-    class="roadmap-progress-fill"
-    style="width:${roadmap.progress}%"
-  ></div>
-</div>
+    </div>
 
-<p>
-  ${roadmap.progress}% Complete
-</p>
+    `;
 
-        </div>
+  });
 
-        `;
+});
 
-      });
+    }
 
-    });
+    function getRoadmapIcon(goal) {
 
+  const name = goal.toLowerCase();
+
+  if (name.includes("ai")) return "🤖";
+  if (name.includes("data")) return "📊";
+  if (name.includes("frontend")) return "💻";
+  if (name.includes("backend")) return "⚙️";
+  if (name.includes("python")) return "🐍";
+  if (name.includes("cyber")) return "🔒";
+  if (name.includes("dsa")) return "🧠";
+
+  return "🚀";
 }
+assistantBtn.addEventListener("click", () => {
+
+  goalInput.value =
+    assistantInput.value;
+
+  daysInput.value =
+    assistantDays.value;
+
+  generateBtn.click();
+
+});
+
+document.querySelectorAll(".chip").forEach(chip => {
+
+  chip.addEventListener("click", () => {
+
+    assistantInput.value =
+      chip.textContent.replace(/^[^\w]+/, "");
+
+  });
+
+});
 

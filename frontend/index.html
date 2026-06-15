@@ -20,64 +20,129 @@
         <h1>🚀 StudyPilot AI</h1>
 
         <p>
-            Build personalized learning roadmaps,
-            track progress, and stay consistent.
-        </p>
+  Your AI-powered learning companion.
+</p>
+
+<p>
+  Generate personalized roadmaps,
+  track progress, and achieve your goals faster.
+</p>
     </div>
+     <div class="assistant-card">
+
+  <h2>🤖 StudyPilot Assistant</h2>
+
+  <p>
+    Tell me what you want to learn and I'll help
+    create a personalized roadmap.
+  </p>
+
+  <div class="assistant-content">
+
+    <input
+      type="text"
+      id="assistantInput"
+      placeholder="e.g. Become a Machine Learning Engineer"
+    >
+    <input
+  type="number"
+  id="assistantDays"
+  placeholder="Days"
+/>
+
+    <button id="assistantBtn">
+      Generate Roadmap
+    </button>
+
+  </div>
+  <div class="suggestion-chips">
+  <button class="chip">🤖 AI Engineer</button>
+  <button class="chip">📊 Data Science</button>
+  <button class="chip">💻 Frontend Developer</button>
+  <button class="chip">🔒 Cybersecurity</button>
+</div>
+
+</div>
+<div id="loadingBox">
+  <div class="spinner"></div>
+  <p>🤖 StudyPilot AI is building your roadmap...</p>
+</div>
+
+
+    
 
     <div class="container">
 
-        <div id="progressDashboard" class="dashboard-card">
+       <div id="progressDashboard" class="dashboard-card">
 
-            <h3>📊 Progress Dashboard</h3>
+    <h3>📊 Progress Dashboard</h3>
 
-            <p>Total Tasks: <span id="totalTasks">0</span></p>
+    <div class="stats-grid">
 
-            <p>Completed Tasks: <span id="completedTasks">0</span></p>
-
-            <p>Remaining Tasks: <span id="remainingTasks">0</span></p>
-
-            <p>Progress: <span id="progressPercent">0%</span></p>
-
-            <div class="progress-bar">
-                <div id="progressFill"></div>
-            </div>
-
+        <div class="stat-card total-card">
+            <div class="stat-icon">📋</div>
+            <h2 id="totalTasks">0</h2>
+            <p>Total Tasks</p>
         </div>
 
-        <div class="controls">
-
-            <input
-                type="number"
-                id="daysInput"
-                placeholder="📅 Enter number of days"
-            >
-
-            <input
-                type="text"
-                id="goalInput"
-                placeholder="🎯 Enter learning goal"
-            >
-            <select id="roadmapSelect">
-  <option value="">All Roadmaps</option>
-</select>
-
-            <button id="generateBtn">
-                Generate Plan
-            </button>
-
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="📝 Enter task"
-            >
-
-            <button id="addBtn">
-                Add Task
-            </button>
-
+       <div class="stat-card completed-card">
+            <div class="stat-icon">✅</div>
+            <h2 id="completedTasks">0</h2>
+            <p>Completed</p>
         </div>
 
+        <div class="stat-card remaining-card">
+             <div class="stat-icon">⏳ </div>
+            <h2 id="remainingTasks">0</h2>
+            <p>Remaining</p>
+        </div>
+
+        <div class="stat-card progress-card">
+             <div class="stat-icon">📈</div>
+            <h2 id="progressPercent">0%</h2>
+            <p>Progress</p>
+        </div>
+
+    </div>
+   
+    <div class="progress-bar">
+        <div id="progressFill"></div>
+    </div>
+
+</div>
+<h2 class="section-title">
+  📝 Task Manager
+</h2>
+ 
+<div class="controls">
+    
+
+    <select id="roadmapSelect">
+      <option value="">All Roadmaps</option>
+    </select>
+
+    <input
+        type="text"
+        id="taskInput"
+        placeholder="📝 Enter task"
+    >
+
+    <button id="addBtn">
+        Add Task
+    </button>
+
+</div>
+<div id="hiddenGenerator" style="display:none;">
+
+  <input type="text" id="goalInput">
+
+  <input type="number" id="daysInput">
+
+  <button id="generateBtn">
+    Generate Plan
+  </button>
+
+</div>
         <div id="welcomeBox">
   <h2>🚀 Welcome to StudyPilot AI</h2>
 
@@ -102,6 +167,8 @@
     </div>
 
     <script src="script.js"></script>
+
+   
 
 </body>
 </html>
