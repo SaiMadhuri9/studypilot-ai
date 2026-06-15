@@ -8,6 +8,8 @@ const goalMappings = {
   java: roadmaps.java,
   dsa: roadmaps.dsa,
   fullstack: roadmaps.fullstack,
+  frontend: roadmaps.frontend,
+backend: roadmaps.backend,
 };
 
 module.exports = goalMappings;

@@ -122,6 +122,26 @@ fullstack: [
   "REST APIs",
   "Deployment",
   "Capstone Project"
+],
+
+frontend: [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "DOM",
+  "Fetch API",
+  "React",
+  "Mini Project"
+],
+
+backend: [
+  "JavaScript",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "Authentication",
+  "REST APIs",
+  "Deployment"
 ]
 
 };
