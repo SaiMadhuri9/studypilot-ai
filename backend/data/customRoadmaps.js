@@ -1,52 +1,35 @@
+const customRoadmapKeywords = require("./customRoadmapKeywords");
+
 function generateCustomRoadmap(goal) {
+
   const userGoal = goal.toLowerCase();
 
-  if (
-    userGoal.includes("ai") ||
-    userGoal.includes("artificial intelligence")
-  ) {
-    return [
-      "Python",
-      "NumPy",
-      "Pandas",
-      "Machine Learning",
-      "Deep Learning",
-      "Neural Networks",
-      "Projects"
-    ];
+  let roadmap = [];
+
+  for (const keyword of Object.keys(customRoadmapKeywords)) {
+
+    if (userGoal.includes(keyword)) {
+
+      roadmap.push(
+        ...customRoadmapKeywords[keyword]
+      );
+
+    }
+
   }
 
-  if (
-    userGoal.includes("data science") ||
-    userGoal.includes("data scientist")
-  ) {
-    return [
-      "Python",
-      "Statistics",
-      "NumPy",
-      "Pandas",
-      "Data Visualization",
-      "Machine Learning",
-      "Projects"
-    ];
-  }
+  roadmap = [...new Set(roadmap)];
 
-  if (
-    userGoal.includes("cybersecurity") ||
-    userGoal.includes("cyber security")
-  ) {
-    return [
-      "Networking",
-      "Linux",
-      "Security Fundamentals",
-      "Web Security",
-      "Ethical Hacking",
-      "Penetration Testing",
-      "Projects"
-    ];
+  if (roadmap.length > 0) {
+
+    roadmap.push("Projects");
+
+    return roadmap;
+
   }
 
   return null;
+
 }
 
 module.exports = generateCustomRoadmap;
