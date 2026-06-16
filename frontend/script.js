@@ -41,6 +41,11 @@ const remainingTasksEl =
 
 const progressPercentEl =
   document.getElementById("progressPercent");
+  const streakCountEl =
+document.getElementById("streakCount");
+
+const achievementCountEl =
+document.getElementById("achievementCount");
 
 function getDifficultyLabel(level) {
 
@@ -229,6 +234,22 @@ remainingTasksEl.textContent =
 progressPercentEl.textContent =
   progressPercent + "%";
 
+  streakCountEl.textContent = streak;
+
+  let achievements = 0;
+
+if (completedGeneratedTasks >= 1)
+  achievements++;
+
+if (roadmapProgress >= 50)
+  achievements++;
+
+if (roadmapProgress === 100)
+  achievements++;
+
+achievementCountEl.textContent =
+  achievements;
+
   progressFill.style.width =
   progressPercent + "%";
 
@@ -238,18 +259,25 @@ progressPercentEl.textContent =
         
 <li>
 
-  <div class="task-content">
+<div class="task-content">
 
-    <div class="task-title ${task.completed ? "completed" : ""}">
-      ${task.completed ? "✅" : "❌"}
-      ${task.title}
+    <div class="task-top">
+
+      <span class="task-status">
+        ${task.completed ? "✅ Completed" : "⏳ In Progress"}
+      </span>
+
+      <div class="task-title ${task.completed ? "completed" : ""}">
+        ${task.title}
+      </div>
+
     </div>
 
     <span class="difficulty ${task.difficulty}">
       ${getDifficultyLabel(task.difficulty)}
     </span>
 
-  </div>
+</div>
 
   <div class="task-actions">
 
@@ -481,22 +509,45 @@ loadingBox.style.display = "block";
 console.log("API Response:", data);
   studyInfo.style.display = "block";
 
-  studyInfo.innerHTML = `
-  <h3>🤖 AI Roadmap Generated</h3>
+studyInfo.innerHTML = `
+<div class="ai-summary">
 
-  <p>
-    <strong>Total Roadmap Days:</strong>
-    ${data.plan.length}
-  </p>
+  <h2>🤖 AI Roadmap Ready</h2>
 
-  <p>
-    <strong>Generation Method:</strong>
-    AI Powered (Groq)
-  </p>
+  <div class="summary-grid">
 
-  <p>
-    Your personalized roadmap has been successfully generated and added to your task manager.
-  </p>
+    <div class="summary-card">
+      <h3>
+${goal
+  .split(" ")
+  .map(
+    word =>
+      word.charAt(0).toUpperCase() +
+      word.slice(1)
+  )
+  .join(" ")}
+</h3>
+      <p>🎯 Learning Goal</p>
+    </div>
+
+    <div class="summary-card">
+      <h3>${days}</h3>
+      <p>📅 Days Available</p>
+    </div>
+
+    <div class="summary-card">
+      <h3>${data.plan.length}</h3>
+     <p>📚 Topics Generated</p>
+    </div>
+
+  </div>
+
+  <div class="ai-message">
+    🚀 Your personalized roadmap has been generated successfully.
+  </div>
+
+</div>
+
 `;
 goalInput.value = "";
 
@@ -596,13 +647,28 @@ function loadRoadmapCards() {
         ></div>
       </div>
 
-      <p class="roadmap-tasks">
-        ${roadmap.completedTasks}
-        /
-        ${roadmap.totalTasks}
-        Tasks Completed
-      </p>
+   <div class="roadmap-stats">
 
+  <div>
+    <strong>${roadmap.completedTasks}</strong>
+    <span>Completed</span>
+  </div>
+
+  <div>
+    <strong>
+      ${roadmap.totalTasks - roadmap.completedTasks}
+    </strong>
+    <span>Remaining</span>
+  </div>
+
+</div>
+
+<p class="
+roadmap-percent
+${roadmap.progress === 100 ? " roadmap-complete" : ""}
+">
+  ${roadmap.progress}% Complete
+</p>
      
 
     </div>
@@ -649,6 +715,36 @@ document.querySelectorAll(".chip").forEach(chip => {
       chip.textContent.replace(/^[^\w]+/, "");
 
   });
+
+});
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const savedTheme =
+  localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+
+  document.body.classList.add("dark-mode");
+
+  themeToggle.textContent = "☀️";
+
+}
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("dark-mode");
+
+  const isDark =
+    document.body.classList.contains("dark-mode");
+
+  localStorage.setItem(
+    "theme",
+    isDark ? "dark" : "light"
+  );
+
+  themeToggle.textContent =
+    isDark ? "☀️" : "🌙";
 
 });
 
