@@ -6,6 +6,8 @@ const goalMappings = require("../data/goalMappings");
 const aliases = require("../data/aliases");
 const generateCustomRoadmap =
 require("../data/customRoadmaps");
+const generateRoadmap =
+require("../services/groqService");
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -28,6 +30,57 @@ const generateStudyPlan = async (req, res) => {
 const userGoal = goal.toLowerCase();
 
 let plan = [];
+
+try {
+
+  const aiRoadmap =
+    await generateRoadmap(goal, days);
+
+  plan = JSON.parse(aiRoadmap);
+
+  console.log("AI Roadmap Generated");
+
+} catch (error) {
+
+  console.log(
+    "Groq failed. Using fallback roadmap."
+  );
+
+}
+if (plan.length > 0) {
+
+  await Task.deleteMany({
+    goal: goal,
+    isGenerated: true
+  });
+
+  for (const item of plan) {
+
+    await Task.create({
+
+      title: `Day ${item.day} - ${item.topic}`,
+
+      goal: goal,
+
+      difficulty: "moderate",
+
+      isGenerated: true
+
+    });
+
+  }
+
+  return res.status(200).json({
+
+    success: true,
+
+    aiGenerated: true,
+
+    plan
+
+  });
+
+}
 
 for (const key of Object.keys(goalMappings)) {
 

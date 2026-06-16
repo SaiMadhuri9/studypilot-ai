@@ -6,6 +6,8 @@ body {
     #f8fafc,
     #eef2ff
   );
+  position: relative;
+overflow-x: hidden;
 
   margin: 0;
   padding: 40px;
@@ -86,36 +88,37 @@ button:hover {
   gap: 10px;
 }
 
-.hero {
+
+.hero{
+  padding-top:90px;
+  margin-bottom:30px;
   text-align: center;
-  padding-top: 60px;
-
-
-  margin-bottom: 40px;
 }
 
 .hero h1 {
-  font-size: 48px;
+  font-size: 5rem;
 
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 
-  font-weight: 700;
+  font-weight: 800;
 
-  font-size: 4rem;
+  line-height: 1.1;
+
+  color: #0f172a;
 }
 
 .hero p {
-  font-size: 20px;
 
   color: #64748b;
 
-  max-width: 600px;
+  max-width: 700px;
 
   margin: 0 auto;
 
-  font-size: 1.25rem;
-}
+  font-size: 1.35rem;
 
+  line-height: 1.7;
+}
 .roadmap-header {
   display: flex;
   align-items: center;
@@ -174,6 +177,7 @@ button:hover {
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-top: 25px;
   
 }
 .dashboard-card h3 {
@@ -196,8 +200,15 @@ button:hover {
 #progressFill{
   height:100%;
   width:0%;
-  background:#2563eb;
-  transition:0.3s;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  transition:0.5s;
 }
 #progressPercent{
   font-weight:bold;
@@ -213,10 +224,18 @@ button:hover {
   margin-top: 10px;
 }
 
+
 .roadmap-progress-fill {
   height: 100%;
-  background: #2563eb;
-  transition: width 0.3s ease;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  transition: width 0.5s ease;
 }
 #studyInfo,
 #roadmapInfo {
@@ -488,7 +507,12 @@ button:hover {
 
   padding: 15px 25px;
 
-  background: white;
+ 
+  background: rgba(255,255,255,0.75);
+
+backdrop-filter: blur(15px);
+
+border: 1px solid rgba(255,255,255,0.4);
 
   border-radius: 12px;
 
@@ -523,6 +547,7 @@ button:hover {
     #ffffff,
     #eff6ff
   );
+  max-width:1200px;
 }
 
 #achievementBox {
@@ -562,12 +587,18 @@ button:hover {
   margin: 20px 0;
 }
 
-.roadmap-card {
-  background: white;
-  border-radius: 12px;
+
+.roadmap-card{
+  background:rgba(255,255,255,.8);
+
+  backdrop-filter:blur(12px);
   padding: 22px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+  border:1px solid rgba(255,255,255,.4);
   cursor: pointer;
+
+  border-radius:20px;
   transition: transform 0.2s ease;
 }
 
@@ -793,8 +824,10 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .assistant-card {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto 30px auto;
+  position: relative;
+overflow: hidden;
 
   background: linear-gradient(
     135deg,
@@ -804,13 +837,38 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 
    border: 1px solid #bfdbfe;
 
-  padding: 20px;
+  padding: 30px 40px;
 
-  border-radius: 15px;
+  border-radius: 24px;
 
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 
   text-align: center;
+}
+.assistant-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(37,99,235,0.08);
+
+  top: -120px;
+  right: -120px;
+
+}
+#assistantBtn{
+  height:60px;
+  padding:0 35px;
+  border-radius:16px;
+  font-size:18px;
+  font-weight:700;
 }
 
 .assistant-card h2 {
@@ -827,10 +885,23 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.08);
   gap: 15px;
   justify-content: center;
 }
+#assistantDays{
+  width:150px;
+}
 
 .assistant-content input {
-  width: 400px;
+  width: 450px;
+  height: 52px;
+  font-size: 18px;
 }
+.chip {
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  transform: translateY(-4px);
+}
+
 
 @media (max-width: 768px) {
 
@@ -908,4 +979,59 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.08);
   font-size: 28px;
   font-weight: 700;
 }
+.dashboard-card,
+.roadmap-card,
+#achievementBox,
+#streakBox {
 
+  background: rgba(255,255,255,0.7);
+
+  backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(255,255,255,0.4);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+}
+body::before {
+
+  content: "";
+
+  position: fixed;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(37,99,235,0.08);
+
+  top: -200px;
+  right: -200px;
+
+  z-index: -1;
+
+}
+
+body::after {
+
+  content: "";
+
+  position: fixed;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(124,58,237,0.06);
+
+  bottom: -250px;
+  left: -250px;
+
+  z-index: -1;
+
+}

@@ -2,6 +2,7 @@ const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
 
 require("dotenv").config();
+// console.log("Gemini Key:", process.env.GEMINI_API_KEY);
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
@@ -26,6 +27,33 @@ app.use("/api/tasks", taskRoutes);
 const PORT = process.env.PORT || 5000;
 console.log(process.env.MONGO_URI);
 connectDB();
+const generateRoadmap =
+  require("./services/groqService");
+
+app.get("/test-ai", async (req, res) => {
+
+  try {
+
+    const roadmap =
+      await generateRoadmap(
+        "AI Engineer",
+        30
+      );
+
+    res.send(roadmap);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

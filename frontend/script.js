@@ -478,30 +478,26 @@ loadingBox.style.display = "block";
 
     return;
   }
-
+console.log("API Response:", data);
   studyInfo.style.display = "block";
 
   studyInfo.innerHTML = `
-  <h3>Study Plan Info</h3>
+  <h3>🤖 AI Roadmap Generated</h3>
 
   <p>
-    <strong>Difficulty:</strong>
-    ${getDifficultyLabel(data.difficulty)}
+    <strong>Total Roadmap Days:</strong>
+    ${data.plan.length}
   </p>
 
   <p>
-    <strong>Topics Per Day:</strong>
-    ${data.topicsPerDay}
+    <strong>Generation Method:</strong>
+    AI Powered (Groq)
   </p>
 
   <p>
-    <strong>Estimated Study Time:</strong>
-    ${data.estimatedHoursPerDay} hours/day
+    Your personalized roadmap has been successfully generated and added to your task manager.
   </p>
-
-  <p>${data.warning}</p>
 `;
-
 goalInput.value = "";
 
 loadTasks();
