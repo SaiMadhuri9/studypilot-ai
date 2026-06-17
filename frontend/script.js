@@ -72,7 +72,7 @@ function loadTasks(goal = "") {
 
   taskList.innerHTML = "";
 
- let url = "https://studypilot-ai-o9k7.onrender.com/api/tasks";
+ let url = "/api/tasks";
 
 if (goal) {
   url += `?goal=${goal}`;
@@ -306,7 +306,7 @@ loadRoadmapCards();
 
 async function deleteTask(id) {
 
-  await fetch(`https://studypilot-ai-o9k7.onrender.com/api/tasks/${id}`, {
+  await fetch(`/api/tasks?id=${id}`, {
     method: "DELETE"
   });
 
@@ -324,7 +324,7 @@ async function deleteTask(id) {
     return;
   }
 
-fetch("https://studypilot-ai-o9k7.onrender.com/api/tasks", {
+fetch("/api/tasks", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -442,7 +442,7 @@ async function completeTask(id) {
       task => task._id === id
     );
 
-  await fetch(`https://studypilot-ai-o9k7.onrender.com/api/tasks/${id}`, {
+  await fetch(`/api/tasks?id=${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -480,7 +480,7 @@ const days = daysInput.value;
 }
 loadingBox.style.display = "block";
 
-  fetch("https://studypilot-ai-o9k7.onrender.com/api/studyplan/generate", {
+  fetch("/api/generate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -576,7 +576,7 @@ roadmapSelect.addEventListener(
 
 function loadGoals() {
 
-  fetch("https://studypilot-ai-o9k7.onrender.com/api/tasks/goals")
+  fetch("/api/goals")
     .then(response => response.json())
     .then(data => {
 
@@ -600,7 +600,7 @@ function loadGoals() {
 function loadRoadmapCards() {
 
   fetch(
-    "https://studypilot-ai-o9k7.onrender.com/api/tasks/roadmaps"
+    "/api/roadmaps"
   )
     .then(response => response.json())
 .then(data => {
