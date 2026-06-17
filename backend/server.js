@@ -29,14 +29,7 @@ console.log(process.env.MONGO_URI);
 connectDB();
 const Task = require("./models/Task");
 
-app.get("/delete-ai", async (req, res) => {
-  await Task.deleteMany({ goal: "AI Engineer" });
 
-  res.json({
-    success: true,
-    message: "AI Engineer tasks deleted"
-  });
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
