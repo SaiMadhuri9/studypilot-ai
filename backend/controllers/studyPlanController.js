@@ -6,8 +6,7 @@ const goalMappings = require("../data/goalMappings");
 const aliases = require("../data/aliases");
 const generateCustomRoadmap =
 require("../data/customRoadmaps");
-const generateRoadmap =
-require("../services/groqService");
+
 const generateStudyPlan = async (req, res) => {
     
   try {
@@ -43,7 +42,7 @@ try {
 } catch (error) {
 
   console.log(
-    "Groq failed. Using fallback roadmap."
+    " Using fallback roadmap."
   );
 
 }
