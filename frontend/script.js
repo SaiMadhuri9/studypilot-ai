@@ -15,6 +15,8 @@ const assistantDays =
   document.getElementById("assistantDays");
 const assistantInput =
   document.getElementById("assistantInput");
+  const roadmapTasks =
+document.getElementById("roadmapTasks");
 
 const assistantBtn =
   document.getElementById("assistantBtn");
@@ -72,7 +74,7 @@ function loadTasks(goal = "") {
 
   taskList.innerHTML = "";
 
- let url = "/api/tasks";
+let url = "http://localhost:5000/api/tasks";
 
 if (goal) {
   url += `?goal=${goal}`;
@@ -82,7 +84,45 @@ fetch(url)
     .then((response) => response.json())
     .then((data) => {
       const tasks = data.data;
+      let filteredTasks;
+
+if (goal) {
+  filteredTasks = tasks;
+} else {
+  filteredTasks =
+    tasks.filter(task => !task.isGenerated);
+}
       allTasks = tasks;
+      const todayTasksList =
+document.getElementById(
+"todayTasksList"
+);
+
+if(todayTasksList){
+
+todayTasksList.innerHTML = "";
+
+filteredTasks
+.filter(task => !task.completed)
+.slice(0,5)
+.forEach(task => {
+
+todayTasksList.innerHTML += `
+<li>
+📖 ${task.title}
+</li>
+`;
+
+});
+
+if(filteredTasks.length === 0){
+
+todayTasksList.innerHTML =
+"<li>No tasks yet</li>";
+
+}
+
+}
       const welcomeBox =
   document.getElementById("welcomeBox");
 
@@ -208,10 +248,26 @@ console.log("Roadmap Progress:", roadmapProgress);
     ></div>
   </div>
 `;
-const totalTasks = tasks.length;
-
+const totalTasks =
+  filteredTasks.length;
 const completedTasks =
-  tasks.filter(task => task.completed).length;
+  filteredTasks.filter(
+    task => task.completed
+  ).length;
+
+document.getElementById(
+"overviewTasks"
+).textContent = totalTasks;
+
+document.getElementById(
+"overviewCompleted"
+).textContent = completedTasks;
+
+document.getElementById(
+"overviewStreak"
+).textContent = streak;
+
+
 
 const remainingTasks =
   totalTasks - completedTasks;
@@ -253,7 +309,7 @@ achievementCountEl.textContent =
   progressFill.style.width =
   progressPercent + "%";
 
-      data.data.forEach((task) => {
+      filteredTasks.forEach((task) => {
 
         taskList.innerHTML += `
         
@@ -302,16 +358,24 @@ achievementCountEl.textContent =
 
 loadGoals();
 loadTasks();
-loadRoadmapCards();
+loadRoadmaps();
 
 async function deleteTask(id) {
 
-  await fetch(`/api/tasks?id=${id}`, {
+  await fetch(
+  `http://localhost:5000/api/tasks/${id}`,
+  {
     method: "DELETE"
-  });
+  }
+)
+ loadTasks(roadmapSelect.value);
+loadRoadmapCards();
 
-  loadTasks(roadmapSelect.value);
-  loadRoadmapCards();
+if (roadmapSelect.value) {
+  showRoadmapTasks(roadmapSelect.value);
+}
+console.log("DELETE CLICKED");
+console.log("Dropdown:", roadmapSelect.value);
 
 }
 
@@ -324,24 +388,24 @@ async function deleteTask(id) {
     return;
   }
 
-fetch("/api/tasks", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    title: taskInput.value,
-    goal: roadmapSelect.value || "General"
+  fetch("http://localhost:5000/api/tasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title: taskInput.value,
+      goal: roadmapSelect.value || "General"
+    })
   })
-})
-.then((response) => response.json())
-.then((data) => {
-  console.log(data);
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
 
-  taskInput.value = "";
+    taskInput.value = "";
 
-  loadTasks();
-});
+    loadTasks();
+  });
 
 });
 
@@ -442,7 +506,7 @@ async function completeTask(id) {
       task => task._id === id
     );
 
-  await fetch(`/api/tasks?id=${id}`, {
+  await fetch(`http://localhost:5000/api/tasks/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -461,7 +525,13 @@ async function completeTask(id) {
   }
 
   loadTasks(roadmapSelect.value);
-  loadRoadmapCards();
+loadRoadmapCards();
+
+if (roadmapSelect.value) {
+  showRoadmapTasks(roadmapSelect.value);
+}
+console.log("COMPLETE CLICKED");
+console.log("Dropdown:", roadmapSelect.value);
 
 }
 generateBtn.addEventListener("click", () => {
@@ -480,7 +550,7 @@ const days = daysInput.value;
 }
 loadingBox.style.display = "block";
 
-  fetch("/api/generate", {
+ fetch("http://localhost:5000/api/tasks/study-plan", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -496,16 +566,14 @@ loadingBox.style.display = "block";
   loadingBox.style.display = "none";
 
   if (!data.success) {
-    loadingBox.style.display = "none";
+  loadingBox.style.display = "none";
 
-    alert(
-      data.message +
-      "\n\nSupported Goals:\n" +
-      data.suggestions.join("\n")
-    );
+  alert(data.message);
 
-    return;
-  }
+  console.log("Backend Error:", data);
+
+  return;
+}
 console.log("API Response:", data);
   studyInfo.style.display = "block";
 
@@ -553,7 +621,7 @@ goalInput.value = "";
 
 loadTasks();
 loadGoals();
-loadRoadmapCards();
+loadRoadmaps();
 
 document.getElementById("welcomeBox").style.display = "none";
   
@@ -576,7 +644,7 @@ roadmapSelect.addEventListener(
 
 function loadGoals() {
 
-  fetch("/api/goals")
+ fetch("http://localhost:5000/api/tasks/goals")
     .then(response => response.json())
     .then(data => {
 
@@ -599,15 +667,46 @@ function loadGoals() {
 
 function loadRoadmapCards() {
 
-  fetch(
-    "/api/roadmaps"
-  )
+  fetch("http://localhost:5000/api/tasks/roadmaps")
     .then(response => response.json())
 .then(data => {
 
   roadmapCards.innerHTML = "";
 
+  if(data.data.length > 0){
+
+const current = data.data[0];
+
+document.getElementById(
+"currentRoadmapName"
+).textContent =
+current.goal || "Roadmap";
+
+document.getElementById(
+"currentRoadmapPercent"
+).textContent =
+(current.progress || 0) + "%";
+
+document.getElementById(
+"currentRoadmapProgress"
+).style.width =
+(current.progress || 0) + "%";
+
+}
+else{
+
+document.getElementById(
+"currentRoadmapName"
+).textContent =
+"No roadmap generated";
+
+}
+
   data.data.forEach(roadmap => {
+    document.getElementById(
+"overviewRoadmaps"
+).textContent =
+data.data.length;
 
     roadmapCards.innerHTML += `
 
@@ -776,3 +875,105 @@ btn.classList.add("active");
 });
 
 });
+
+function loadRoadmaps() {
+  const roadmapCards =
+document.getElementById("roadmapCards");
+
+
+  fetch("http://localhost:5000/api/tasks/roadmaps")
+    .then(response => response.json())
+    .then(data => {
+    
+      console.log("Roadmaps API:", data);
+console.log("Roadmaps Array:", data.data);
+
+      roadmapCards.innerHTML = "";
+
+      data.data.forEach(roadmap => {
+
+        console.log("Roadmap Item:", roadmap);
+        roadmapCards.innerHTML += `
+          <div
+            class="roadmap-card"
+           onclick="
+  roadmapSelect.value='${roadmap.goal}';
+  showRoadmapTasks('${roadmap.goal}');
+"
+          >
+
+            <h3>${roadmap.goal}</h3>
+
+            <p>
+              ${roadmap.completedTasks}
+              /
+              ${roadmap.totalTasks}
+              Completed
+            </p>
+
+            <div class="roadmap-progress-bar">
+              <div
+                class="roadmap-progress-fill"
+                style="width:${roadmap.progress}%"
+              ></div>
+            </div>
+
+            <p>${roadmap.progress}%</p>
+
+          </div>
+        `;
+      });
+
+    });
+
+}
+function showRoadmapTasks(goal) {
+  console.log("REFRESHING:", goal);
+
+  fetch(
+    `http://localhost:5000/api/tasks?goal=${goal}`
+  )
+  .then(response => response.json())
+  .then(data => {
+
+    roadmapTasks.innerHTML = `
+      <h2>${goal} Roadmap Tasks</h2>
+    `;
+
+    const generatedTasks =
+      data.data.filter(
+        task => task.isGenerated
+      );
+
+    generatedTasks.forEach(task => {
+
+      roadmapTasks.innerHTML += `
+
+<div class="
+  roadmap-task-card
+  ${task.completed ? "completed" : ""}
+">
+
+  <p>
+    ${task.completed ? "✅" : "⏳"}
+    ${task.title}
+  </p>
+
+  ${!task.completed ? `
+<button onclick="completeTask('${task._id}')">
+  Complete
+</button>
+` : ""}
+
+<button onclick="deleteTask('${task._id}')">
+  Delete
+</button>
+
+</div>
+`;
+
+    });
+
+  });
+
+}

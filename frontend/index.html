@@ -95,6 +95,224 @@ class="page-section active-section">
   <p>🤖 StudyPilot AI is building your roadmap...</p>
 </div>
 
+<div class="welcome-dashboard">
+
+  <h2>👋 Welcome Back</h2>
+
+  <p>
+    Continue your learning journey and stay consistent.
+  </p>
+
+</div>
+<div class="quick-overview">
+
+  <div class="overview-card">
+    <h3 id="overviewTasks">0</h3>
+    <p>Total Tasks</p>
+  </div>
+
+  <div class="overview-card">
+    <h3 id="overviewCompleted">0</h3>
+    <p>Completed</p>
+  </div>
+
+  <div class="overview-card">
+    <h3 id="overviewStreak">0</h3>
+    <p>Day Streak</p>
+  </div>
+
+  <div class="overview-card">
+    <h3 id="overviewRoadmaps">0</h3>
+    <p>Roadmaps</p>
+  </div>
+
+</div>
+<div id="currentRoadmapWidget">
+
+  <h2>🗺️ Current Roadmap</h2>
+  <div id="todayTasksWidget">
+
+  <h2>📅 Today's Tasks</h2>
+
+  <ul id="todayTasksList">
+
+    <li>No tasks yet</li>
+
+  </ul>
+
+</div>
+
+  <p id="currentRoadmapName">
+    No roadmap selected
+  </p>
+
+  <div class="roadmap-progress-bar">
+
+    <div
+      id="currentRoadmapProgress"
+      class="roadmap-progress-fill"
+      style="width:0%">
+    </div>
+
+  </div>
+
+  <p id="currentRoadmapPercent">
+    0%
+  </p>
+
+</div>
+<!-- 
+<div id="progressDashboard" class="dashboard-card">
+
+    <h3>📊 Progress Dashboard</h3>
+
+    <div class="stats-grid">
+      <div class="stat-card streak-card">
+
+    <div class="stat-icon">🔥</div>
+
+    <h2 id="streakCount">0</h2>
+
+    <p>Streak</p>
+    </div>
+</div>
+
+
+<div class="stat-card achievement-card">
+
+    <div class="stat-icon">🏆</div>
+
+    <h2 id="achievementCount">0</h2>
+
+    <p>Achievements</p>
+
+</div>
+
+        <div class="stat-card total-card">
+            <div class="stat-icon">📋</div>
+            <h2 id="totalTasks">0</h2>
+            <p>Total Tasks</p>
+        </div>
+
+       <div class="stat-card completed-card">
+            <div class="stat-icon">✅</div>
+            <h2 id="completedTasks">0</h2>
+            <p>Completed</p>
+        </div>
+
+        <div class="stat-card remaining-card">
+             <div class="stat-icon">⏳ </div>
+            <h2 id="remainingTasks">0</h2>
+            <p>Remaining</p>
+        </div>
+
+        <div class="stat-card progress-card">
+             <div class="stat-icon">📈</div>
+            <h2 id="progressPercent">0%</h2>
+            <p>Progress</p>
+        </div>
+
+    </div> -->
+   
+    <div class="progress-bar">
+        <div id="progressFill"></div>
+    </div>
+
+</div>
+</section>
+<section
+id="tasksSection"
+class="page-section">
+
+<h2 class="section-title">
+  📝 Task Manager
+</h2>
+ 
+<div class="controls">
+    
+
+    <select id="roadmapSelect">
+      <option value="">All Roadmaps</option>
+    </select>
+
+    <input
+        type="text"
+        id="taskInput"
+        placeholder="📝 Enter task"
+    >
+
+    <button id="addBtn">
+        Add Task
+    </button>
+
+</div>
+<div id="hiddenGenerator" style="display:none;">
+
+  <input type="text" id="goalInput">
+
+  <input type="number" id="daysInput">
+
+  <button id="generateBtn">
+    Generate Plan
+  </button>
+
+</div>
+        <div id="welcomeBox">
+  <h2>🚀 Welcome to StudyPilot AI</h2>
+
+  <p>
+    Enter a learning goal and number of days to generate
+    your personalized study roadmap.
+  </p>
+</div>
+
+        <div id="studyInfo"></div>
+
+       
+        <ul id="taskList"></ul>
+
+</section>
+<section
+id="roadmapSection"
+class="page-section">
+
+<h2>🗺️ Roadmaps</h2>
+
+<div id="roadmapInfo"></div>
+
+<div id="roadmapCards" class="roadmap-cards"></div>
+
+<div id="roadmapTasks"></div>
+
+</section>
+<section
+id="resourcesSection"
+class="page-section">
+
+<h2>📚 Learning Resources</h2>
+
+<p>
+Resources for roadmap topics will appear here.
+</p>
+
+</section>
+<section
+id="notesSection"
+class="page-section">
+
+<h2>📝 Study Notes</h2>
+
+<textarea
+id="studyNotes"
+placeholder="Write what you learned today, weak areas, revision notes..."
+rows="10">
+</textarea>
+
+</section>
+<section
+id="progressSection"
+class="page-section">
+
 <div id="progressDashboard" class="dashboard-card">
 
     <h3>📊 Progress Dashboard</h3>
@@ -146,101 +364,6 @@ class="page-section active-section">
         </div>
 
     </div>
-   
-    <div class="progress-bar">
-        <div id="progressFill"></div>
-    </div>
-
-</div>
-</section>
-<section
-id="tasksSection"
-class="page-section">
-<h2 class="section-title">
-  📝 Task Manager
-</h2>
- 
-<div class="controls">
-    
-
-    <select id="roadmapSelect">
-      <option value="">All Roadmaps</option>
-    </select>
-
-    <input
-        type="text"
-        id="taskInput"
-        placeholder="📝 Enter task"
-    >
-
-    <button id="addBtn">
-        Add Task
-    </button>
-
-</div>
-<div id="hiddenGenerator" style="display:none;">
-
-  <input type="text" id="goalInput">
-
-  <input type="number" id="daysInput">
-
-  <button id="generateBtn">
-    Generate Plan
-  </button>
-
-</div>
-        <div id="welcomeBox">
-  <h2>🚀 Welcome to StudyPilot AI</h2>
-
-  <p>
-    Enter a learning goal and number of days to generate
-    your personalized study roadmap.
-  </p>
-</div>
-
-        <div id="studyInfo"></div>
-
-       <section
-id="roadmapSection"
-class="page-section">
-
-<h2>🗺️ Roadmaps</h2>
-
-<div id="roadmapInfo"></div>
-
-<div id="roadmapCards" class="roadmap-cards"></div>
-
-</section>
-        <ul id="taskList"></ul>
-
-</section>
-<section
-id="resourcesSection"
-class="page-section">
-
-<h2>📚 Learning Resources</h2>
-
-<p>
-Resources for roadmap topics will appear here.
-</p>
-
-</section>
-<section
-id="notesSection"
-class="page-section">
-
-<h2>📝 Study Notes</h2>
-
-<textarea
-id="studyNotes"
-placeholder="Write what you learned today, weak areas, revision notes..."
-rows="10">
-</textarea>
-
-</section>
-<section
-id="progressSection"
-class="page-section">
 
 <h2>📈 Detailed Progress</h2>
 

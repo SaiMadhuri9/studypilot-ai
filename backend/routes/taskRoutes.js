@@ -12,8 +12,10 @@ const {
   createTask,
   updateTask,
   deleteTask,
-  generateStudyPlan,
 } = require("../controllers/taskController");
+const {
+  generateStudyPlan
+} = require("../controllers/studyPlanController");
 
 router.get("/", getTasks);
 router.get("/goals", getGoals);

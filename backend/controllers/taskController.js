@@ -192,74 +192,8 @@ const getTaskById = async (req, res) => {
   }
 };
 
-const generateStudyPlan = (req, res) => {
-  const { subject, daysLeft, hoursPerDay } = req.body;
 
-  if (!subject || !daysLeft || !hoursPerDay) {
-    return res.status(400).json({
-      success: false,
-      message: "Please provide subject, daysLeft and hoursPerDay"
-    });
-  }
 
-  if (daysLeft <= 0 || hoursPerDay <= 0) {
-    return res.status(400).json({
-      success: false,
-      message: "daysLeft and hoursPerDay must be greater than 0"
-    });
-  }
-
-  const totalHours = daysLeft * hoursPerDay;
-
-  let topics = [];
-
-  if (subject.toLowerCase() === "javascript") {
-    topics = [
-      "Variables",
-      "Functions",
-      "Arrays",
-      "Objects",
-      "DOM"
-    ];
-  } else if (subject.toLowerCase() === "nodejs") {
-    topics = [
-      "Modules",
-      "Express",
-      "Routes",
-      "Controllers",
-      "MongoDB"
-    ];
-  } else {
-    topics = [
-      "Introduction",
-      "Basics",
-      "Practice",
-      "Revision",
-      "Mock Test"
-    ];
-  }
-
-  const plan = [];
-
-  for (let i = 0; i < daysLeft; i++) {
-    const topic = topics[i % topics.length];
-
-    plan.push(
-  `Day ${i + 1} - ${topic} (${hoursPerDay} hours)`
-);
-  }
-  const generatedAt = new Date();
-
-res.json({
-  success: true,
-  subject,
-  totalDays: daysLeft,
-  totalHours,
-  dailyHours: hoursPerDay,
-  generatedAt,
-  dailyPlan: plan
-});
-};
 
 const getGoals = async (req, res) => {
   try {
@@ -284,10 +218,14 @@ const getRoadmaps = async (req, res) => {
   try {
 
     const goals = await Task.distinct("goal");
+    const filteredGoals =
+goals.filter(
+ goal => goal !== "General"
+);
 
     const roadmaps = [];
 
-    for (const goal of goals) {
+    for (const goal of filteredGoals) {
 
       const tasks = await Task.find({ goal });
 
@@ -335,6 +273,5 @@ module.exports = {
   getTaskById,
   createTask,
   updateTask,
-  deleteTask,
-  generateStudyPlan,
+  deleteTask
 };
