@@ -717,34 +717,62 @@ document.querySelectorAll(".chip").forEach(chip => {
   });
 
 });
+
 const themeToggle =
   document.getElementById("themeToggle");
 
-const savedTheme =
-  localStorage.getItem("theme");
+if (themeToggle) {
 
-if (savedTheme === "dark") {
+  const savedTheme =
+    localStorage.getItem("theme");
 
-  document.body.classList.add("dark-mode");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggle.textContent = "☀️";
+  }
 
-  themeToggle.textContent = "☀️";
+  themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    const isDark =
+      document.body.classList.contains("dark-mode");
+
+    localStorage.setItem(
+      "theme",
+      isDark ? "dark" : "light"
+    );
+
+    themeToggle.textContent =
+      isDark ? "☀️" : "🌙";
+
+  });
 
 }
+const menuButtons =
+document.querySelectorAll(".menu-btn");
 
-themeToggle.addEventListener("click", () => {
+const sections =
+document.querySelectorAll(".page-section");
 
-  document.body.classList.toggle("dark-mode");
+menuButtons.forEach(btn => {
 
-  const isDark =
-    document.body.classList.contains("dark-mode");
+btn.addEventListener("click", () => {
 
-  localStorage.setItem(
-    "theme",
-    isDark ? "dark" : "light"
-  );
+sections.forEach(section => {
+section.classList.remove("active-section");
+});
 
-  themeToggle.textContent =
-    isDark ? "☀️" : "🌙";
+menuButtons.forEach(button => {
+button.classList.remove("active");
+});
+
+document
+.getElementById(btn.dataset.section)
+.classList.add("active-section");
+
+btn.classList.add("active");
 
 });
 
+});

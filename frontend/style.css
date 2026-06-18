@@ -10,7 +10,7 @@ body {
 overflow-x: hidden;
 
   margin: 0;
-  padding: 40px;
+  padding:0;
   
 
   min-height: 100vh;
@@ -580,7 +580,8 @@ border: 1px solid rgba(255,255,255,0.4);
     #ffffff,
     #eff6ff
   );
-  max-width:1200px;
+  max-width:none;
+  width:100%;
 }
 
 #achievementBox {
@@ -901,8 +902,9 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .assistant-card {
-  max-width: 1000px;
-  margin: 0 auto 30px auto;
+  max-width: none;
+  width:100%;
+    margin: 0 auto 30px auto;
   position: relative;
 overflow: hidden;
 
@@ -1515,5 +1517,154 @@ body::after {
 .roadmap-complete {
 
   color: #22c55e;
+
+}
+.page-section{
+    display:none;
+}
+
+.active-section{
+    display:block;
+}
+
+textarea{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    min-height:250px;
+}
+
+/* =========================
+STUDYPILOT V2 SIDEBAR
+========================= */
+
+.app-layout{
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:300px;
+background:#0f172a;
+padding:25px 15px;
+
+display:flex;
+flex-direction:column;
+
+gap:12px;
+
+position:fixed;
+left:0;
+top:0;
+
+height:100vh;
+
+box-sizing:border-box;
+
+border-right:1px solid #1e293b;
+
+z-index:1000;
+}
+
+.sidebar .logo{
+color:white;
+font-size:2rem;
+font-weight:700;
+
+margin-bottom:25px;
+}
+
+.main-content{
+margin-left:300px;
+
+width:calc(100% - 300px);
+
+padding:20px;
+
+box-sizing:border-box;
+}
+
+.menu-btn{
+width:100%;
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+padding:15px 18px;
+
+border:none;
+
+border-radius:14px;
+
+background:transparent;
+
+color:white;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:0.3s ease;
+
+text-align:left;
+
+box-shadow:none;
+}
+
+.menu-btn:hover{
+background:#1e293b;
+
+transform:none;
+}
+
+.menu-btn.active{
+background:linear-gradient(
+135deg,
+#2563eb,
+#3b82f6
+);
+}
+
+.page-section{
+display:none;
+}
+
+.active-section{
+display:block;
+}
+
+/* mobile */
+
+@media(max-width:768px){
+
+.sidebar{
+width:100%;
+
+```
+height:auto;
+
+position:relative;
+
+flex-direction:row;
+
+overflow-x:auto;
+
+padding:10px;
+```
+
+}
+
+.sidebar .logo{
+display:none;
+}
+
+.main-content{
+margin-left:0;
+width:100%;
+}
 
 }

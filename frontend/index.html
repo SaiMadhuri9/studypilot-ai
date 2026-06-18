@@ -5,36 +5,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="app-layout">
 
-    <nav class="navbar">
-  <div class="logo">🚀 StudyPilot AII</div>
+  <div class="sidebar">
 
-  <div class="nav-links">
+  <h2 class="logo">
+    🚀 StudyPilot AI
+  </h2>
 
-  <a href="#">Dashboard</a>
-  <a href="#">Features</a>
-  <a href="#">GitHub</a>
+  <button class="menu-btn active" data-section="dashboardSection">
+    📊 Dashboard
+  </button>
 
-  <button id="themeToggle">
-    🌙
+  <button class="menu-btn" data-section="roadmapSection">
+    🗺️ Roadmaps
+  </button>
+
+  <button class="menu-btn" data-section="tasksSection">
+    ✅ Tasks
+  </button>
+
+  <button class="menu-btn" data-section="resourcesSection">
+    📚 Resources
+  </button>
+
+  <button class="menu-btn" data-section="notesSection">
+    📝 Notes
+  </button>
+
+  <button class="menu-btn" data-section="progressSection">
+    📈 Progress
   </button>
 
 </div>
-</nav>
 
-    <div class="hero">
-        <h1>🚀 StudyPilot AI</h1>
+<div class="main-content">
 
-        <p>
-  Your AI-powered learning companion.
-</p>
 
-<p>
-  Generate personalized roadmaps,
-  track progress, and achieve your goals faster.
-</p>
-    </div>
-     <div class="assistant-card">
+     
+
+
+    
+
+    <div class="container">
+      <section
+id="dashboardSection"
+class="page-section active-section">
+
+<div class="assistant-card">
 
   <h2>🤖 StudyPilot Assistant</h2>
 
@@ -50,36 +68,34 @@
       id="assistantInput"
       placeholder="e.g. Become a Machine Learning Engineer"
     >
+
     <input
-  type="number"
-  id="assistantDays"
-  placeholder="Days"
-/>
+      type="number"
+      id="assistantDays"
+      placeholder="Days"
+    />
 
     <button id="assistantBtn">
       Generate Roadmap
     </button>
 
   </div>
+
   <div class="suggestion-chips">
-  <button class="chip">🤖 AI Engineer</button>
-  <button class="chip">📊 Data Science</button>
-  <button class="chip">💻 Frontend Developer</button>
-  <button class="chip">🔒 Cybersecurity</button>
-</div>
+    <button class="chip">🤖 AI Engineer</button>
+    <button class="chip">📊 Data Science</button>
+    <button class="chip">💻 Frontend Developer</button>
+    <button class="chip">🔒 Cybersecurity</button>
+  </div>
 
 </div>
+
 <div id="loadingBox">
   <div class="spinner"></div>
   <p>🤖 StudyPilot AI is building your roadmap...</p>
 </div>
 
-
-    
-
-    <div class="container">
-
-       <div id="progressDashboard" class="dashboard-card">
+<div id="progressDashboard" class="dashboard-card">
 
     <h3>📊 Progress Dashboard</h3>
 
@@ -91,8 +107,9 @@
     <h2 id="streakCount">0</h2>
 
     <p>Streak</p>
-
+    </div>
 </div>
+
 
 <div class="stat-card achievement-card">
 
@@ -135,6 +152,10 @@
     </div>
 
 </div>
+</section>
+<section
+id="tasksSection"
+class="page-section">
 <h2 class="section-title">
   📝 Task Manager
 </h2>
@@ -179,21 +200,62 @@
 
         <div id="studyInfo"></div>
 
-        <div id="roadmapInfo"></div>
+       <section
+id="roadmapSection"
+class="page-section">
 
-        <div id="achievementBox"></div>
+<h2>🗺️ Roadmaps</h2>
 
-        <div id="streakBox"></div>
+<div id="roadmapInfo"></div>
 
-        <div id="roadmapCards" class="roadmap-cards"></div>
+<div id="roadmapCards" class="roadmap-cards"></div>
 
+</section>
         <ul id="taskList"></ul>
 
-    </div>
+</section>
+<section
+id="resourcesSection"
+class="page-section">
 
+<h2>📚 Learning Resources</h2>
+
+<p>
+Resources for roadmap topics will appear here.
+</p>
+
+</section>
+<section
+id="notesSection"
+class="page-section">
+
+<h2>📝 Study Notes</h2>
+
+<textarea
+id="studyNotes"
+placeholder="Write what you learned today, weak areas, revision notes..."
+rows="10">
+</textarea>
+
+</section>
+<section
+id="progressSection"
+class="page-section">
+
+<h2>📈 Detailed Progress</h2>
+
+<div id="achievementBox"></div>
+
+<div id="streakBox"></div>
+
+</section>
+
+</div>
+  </div>
     <script src="script.js"></script>
-
+  
    
 
 </body>
+
 </html>
