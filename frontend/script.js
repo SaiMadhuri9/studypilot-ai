@@ -712,6 +712,8 @@ data.data.length;
       onclick="
         roadmapSelect.value='${roadmap.goal}';
         loadTasks('${roadmap.goal}');
+        loadResources('${roadmap.goal}');
+        loadResources('${roadmap.goal}');
       "
     >
 
@@ -814,6 +816,105 @@ document.querySelectorAll(".chip").forEach(chip => {
 
 });
 
+const resourcesData = {
+
+  java: {
+    docs:
+      "https://docs.oracle.com/javase/tutorial/",
+
+    youtube:
+      "https://www.youtube.com/watch?v=BGTx91t8q50",
+
+    practice:
+      "https://www.hackerrank.com/domains/java"
+  },
+
+  react: {
+    docs:
+      "https://react.dev",
+
+    youtube:
+      "https://www.youtube.com/watch?v=bMknfKXIFA8",
+
+    practice:
+      "https://www.frontendmentor.io"
+  },
+
+  javascript: {
+    docs:
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+
+    youtube:
+      "https://www.youtube.com/watch?v=PkZNo7MFNFg",
+
+    practice:
+      "https://javascript.info"
+  }
+
+};
+
+function loadResources(goal) {
+
+  const resourcesContainer =
+    document.getElementById("resourcesContainer");
+
+  const resources = {
+
+    java: {
+      notes: "https://www.javatpoint.com/java-tutorial",
+      video: "https://www.youtube.com/watch?v=BGTx91t8q50",
+      practice: "https://www.hackerrank.com/domains/java"
+    },
+
+    react: {
+      notes: "https://react.dev",
+      video: "https://www.youtube.com/watch?v=bMknfKXIFA8",
+      practice: "https://www.frontendmentor.io"
+    }
+
+  };
+
+  const data = resources[goal.toLowerCase()];
+
+  if (!data) {
+    resourcesContainer.innerHTML =
+      "<p>No resources available.</p>";
+    return;
+  }
+
+  resourcesContainer.innerHTML = `
+    <div class="resource-card">
+
+      <h2>📚 ${goal} Resources</h2>
+
+      <a
+  class="resource-link"
+  href="${data.notes}"
+  target="_blank"
+>
+  📚 Notes
+</a>
+
+     <a
+  class="resource-link"
+  href="${data.video}"
+  target="_blank"
+>
+  🎥 YouTube Course
+</a>
+
+      <a
+  class="resource-link"
+  href="${data.practice}"
+  target="_blank"
+>
+  💻 Practice Problems
+</a>
+
+    </div>
+  `;
+}
+
 const themeToggle =
   document.getElementById("themeToggle");
 
@@ -897,6 +998,7 @@ console.log("Roadmaps Array:", data.data);
            onclick="
   roadmapSelect.value='${roadmap.goal}';
   showRoadmapTasks('${roadmap.goal}');
+  loadResources('${roadmap.goal}');
 "
           >
 
@@ -1067,5 +1169,54 @@ async function deleteRoadmap(goal) {
   loadRoadmaps();
   loadGoals();
   loadTasks();
+  
+
+}
+const studyNotes =
+  document.getElementById("studyNotes");
+
+const saveNotesBtn =
+  document.getElementById("saveNotesBtn");
+
+const clearNotesBtn =
+  document.getElementById("clearNotesBtn");
+
+if (studyNotes) {
+
+  const savedNotes =
+    localStorage.getItem("studyNotes");
+
+  if (savedNotes) {
+    studyNotes.value = savedNotes;
+  }
+
+}
+
+if (saveNotesBtn) {
+
+  saveNotesBtn.addEventListener("click", () => {
+
+    localStorage.setItem(
+      "studyNotes",
+      studyNotes.value
+    );
+
+    alert("Notes saved successfully!");
+
+  });
+
+}
+
+if (clearNotesBtn) {
+
+  clearNotesBtn.addEventListener("click", () => {
+
+    localStorage.removeItem("studyNotes");
+
+    studyNotes.value = "";
+
+    alert("Notes cleared!");
+
+  });
 
 }

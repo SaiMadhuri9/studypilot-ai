@@ -3,7 +3,31 @@
 <head>
     <title>StudyPilot AI</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+<div class="mobile-nav">
+
+  <button class="menu-btn active" data-section="dashboardSection">
+    📊
+  </button>
+
+  <button class="menu-btn" data-section="roadmapSection">
+    🗺️
+  </button>
+
+  <button class="menu-btn" data-section="tasksSection">
+    ✅
+  </button>
+
+  <button class="menu-btn" data-section="resourcesSection">
+    📚
+  </button>
+
+  <button class="menu-btn" data-section="progressSection">
+    📈
+  </button>
+
+</div>
 <body>
   <div class="app-layout">
 
@@ -291,22 +315,28 @@ class="page-section">
 
 <h2>📚 Learning Resources</h2>
 
-<p>
-Resources for roadmap topics will appear here.
-</p>
+<div id="resourcesContainer"></div>
 
 </section>
-<section
-id="notesSection"
-class="page-section">
+<section id="notesSection" class="page-section">
 
-<h2>📝 Study Notes</h2>
+  <h2>📝 Study Notes</h2>
 
-<textarea
-id="studyNotes"
-placeholder="Write what you learned today, weak areas, revision notes..."
-rows="10">
-</textarea>
+  <textarea
+    id="studyNotes"
+    placeholder="Write what you learned today, weak areas, revision notes..."
+    rows="10">
+  </textarea>
+
+  <div class="notes-buttons">
+    <button id="saveNotesBtn">
+      💾 Save Notes
+    </button>
+
+    <button id="clearNotesBtn">
+      🗑️ Clear Notes
+    </button>
+  </div>
 
 </section>
 <section
