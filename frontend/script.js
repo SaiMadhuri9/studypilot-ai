@@ -1,3 +1,9 @@
+const API_BASE =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:5000"
+    : "";
+
 console.log("StudyPilot Frontend Loaded");
 
 let allTasks = [];
@@ -76,7 +82,7 @@ function loadTasks(goal = "") {
 
   taskList.innerHTML = "";
 
-let url = "http://localhost:5000/api/tasks";
+let url = `${API_BASE}/api/tasks`;
 
 if (goal) {
   url += `?goal=${goal}`;
@@ -357,9 +363,7 @@ loadProgressRoadmaps();
 
 async function deleteTask(id) {
 
-  await fetch(
-  `http://localhost:5000/api/tasks/${id}`,
-  {
+await fetch(`${API_BASE}/api/tasks/${id}`, {
     method: "DELETE"
   }
 )
@@ -383,7 +387,7 @@ console.log("Dropdown:", roadmapSelect.value);
     return;
   }
 
-  fetch("http://localhost:5000/api/tasks", {
+  fetch(`${API_BASE}/api/tasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -501,7 +505,7 @@ async function completeTask(id) {
       task => task._id === id
     );
 
-  await fetch(`http://localhost:5000/api/tasks/${id}`, {
+await fetch(`${API_BASE}/api/tasks/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -546,7 +550,7 @@ const days = daysInput.value;
 }
 loadingBox.style.display = "block";
 
- fetch("http://localhost:5000/api/tasks/study-plan", {
+fetch(`${API_BASE}/api/tasks/study-plan`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -641,7 +645,7 @@ roadmapSelect.addEventListener(
 
 function loadGoals() {
 
- fetch("http://localhost:5000/api/tasks/goals")
+fetch(`${API_BASE}/api/tasks/goals`)
     .then(response => response.json())
     .then(data => {
 
@@ -664,7 +668,7 @@ function loadGoals() {
 
 function loadRoadmapCards() {
 
-  fetch("http://localhost:5000/api/tasks/roadmaps")
+  fetch(`${API_BASE}/api/tasks/roadmaps`)
     .then(response => response.json())
 .then(data => {
 
@@ -979,7 +983,7 @@ function loadRoadmaps() {
 document.getElementById("roadmapCards");
 
 
-  fetch("http://localhost:5000/api/tasks/roadmaps")
+  fetch(`${API_BASE}/api/tasks/roadmaps`)
     .then(response => response.json())
     .then(data => {
     
@@ -1040,9 +1044,9 @@ deleteRoadmap('${roadmap.goal}');
 }
 function loadProgressRoadmaps() {
 
-  fetch(
-    "http://localhost:5000/api/tasks/roadmaps"
-  )
+ fetch(
+`${API_BASE}/api/tasks/roadmaps`
+)
   .then(response => response.json())
   .then(data => {
 
@@ -1101,9 +1105,7 @@ progressRoadmaps.innerHTML += `
 function showRoadmapTasks(goal) {
   console.log("REFRESHING:", goal);
 
-  fetch(
-    `http://localhost:5000/api/tasks?goal=${goal}`
-  )
+  fetch(`${API_BASE}/api/tasks?goal=${goal}`)
   .then(response => response.json())
   .then(data => {
 
@@ -1157,12 +1159,12 @@ async function deleteRoadmap(goal) {
 
   if (!confirmDelete) return;
 
-  await fetch(
-    `http://localhost:5000/api/tasks/roadmaps/${goal}`,
-    {
-      method: "DELETE"
-    }
-  );
+ await fetch(
+`${API_BASE}/api/tasks/roadmaps/${goal}`,
+{
+  method: "DELETE"
+}
+);
 
   roadmapTasks.innerHTML = "";
 
