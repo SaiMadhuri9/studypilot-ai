@@ -12,6 +12,7 @@ const {
   createTask,
   updateTask,
   deleteTask,
+  deleteRoadmap,
 } = require("../controllers/taskController");
 const {
   generateStudyPlan
@@ -23,6 +24,10 @@ router.get("/roadmaps", getRoadmaps);
 router.get("/:id", getTaskById);
 router.post("/", createTask);
 router.post("/study-plan", generateStudyPlan);
+router.delete(
+  "/roadmaps/:goal",
+  deleteRoadmap
+);
 
 
 router.route("/:id")

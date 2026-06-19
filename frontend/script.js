@@ -9,6 +9,10 @@ const goalInput = document.getElementById("goalInput");
 const generateBtn = document.getElementById("generateBtn");
 const daysInput = document.getElementById("daysInput");
 const studyInfo = document.getElementById("studyInfo");
+const roadmapProgressCards =
+document.getElementById(
+  "roadmapProgressCards"
+);
 const loadingBox =
   document.getElementById("loadingBox");
 const assistantDays =
@@ -24,8 +28,6 @@ const roadmapCards =
   document.getElementById("roadmapCards");
 const roadmapSelect =
   document.getElementById("roadmapSelect");
-const streakBox =
-  document.getElementById("streakBox");
 const achievementBox =
   document.getElementById("achievementBox");
 const roadmapInfo =
@@ -204,30 +206,21 @@ const dayText =
   localStorage.removeItem("studyStreak");
   localStorage.removeItem("lastStudyDate");
 
-  streakBox.style.display = "none";
+  
 
 } else {
 
-  streakBox.style.display = "block";
+  
 
 }
 
-streakBox.innerHTML = `
-  <h3>🔥 Study Streak</h3>
 
-  <p>
-    Current Streak:
-    <strong>
-      ${streak} ${dayText}
-    </strong>
-  </p>
-`;
 
       console.log("Generated Tasks:", generatedTasks.length);
 console.log("Roadmap Progress:", roadmapProgress);
 
      roadmapInfo.innerHTML = `
-  <h3>Roadmap Progress</h3>
+  <h3>Roadmap Progress</h3>;
 
   <p>
     <strong>Completed Topics:</strong>
@@ -249,9 +242,10 @@ console.log("Roadmap Progress:", roadmapProgress);
   </div>
 `;
 const totalTasks =
-  filteredTasks.length;
+  tasks.length;
+
 const completedTasks =
-  filteredTasks.filter(
+  tasks.filter(
     task => task.completed
   ).length;
 
@@ -359,6 +353,7 @@ achievementCountEl.textContent =
 loadGoals();
 loadTasks();
 loadRoadmaps();
+loadProgressRoadmaps();
 
 async function deleteTask(id) {
 
@@ -370,7 +365,7 @@ async function deleteTask(id) {
 )
  loadTasks(roadmapSelect.value);
 loadRoadmapCards();
-
+loadProgressRoadmaps();
 if (roadmapSelect.value) {
   showRoadmapTasks(roadmapSelect.value);
 }
@@ -526,6 +521,7 @@ async function completeTask(id) {
 
   loadTasks(roadmapSelect.value);
 loadRoadmapCards();
+loadProgressRoadmaps();
 
 if (roadmapSelect.value) {
   showRoadmapTasks(roadmapSelect.value);
@@ -622,6 +618,7 @@ goalInput.value = "";
 loadTasks();
 loadGoals();
 loadRoadmaps();
+loadProgressRoadmaps();
 
 document.getElementById("welcomeBox").style.display = "none";
   
@@ -894,6 +891,7 @@ console.log("Roadmaps Array:", data.data);
 
         console.log("Roadmap Item:", roadmap);
         roadmapCards.innerHTML += `
+        
           <div
             class="roadmap-card"
            onclick="
@@ -903,6 +901,8 @@ console.log("Roadmaps Array:", data.data);
           >
 
             <h3>${roadmap.goal}</h3>
+
+            
 
             <p>
               ${roadmap.completedTasks}
@@ -917,14 +917,83 @@ console.log("Roadmaps Array:", data.data);
                 style="width:${roadmap.progress}%"
               ></div>
             </div>
+            <button
+onclick="
+event.stopPropagation();
+deleteRoadmap('${roadmap.goal}');
+"
+>
+🗑 Delete Roadmap
+</button>
 
             <p>${roadmap.progress}%</p>
 
           </div>
+          
         `;
       });
 
     });
+
+}
+function loadProgressRoadmaps() {
+
+  fetch(
+    "http://localhost:5000/api/tasks/roadmaps"
+  )
+  .then(response => response.json())
+  .then(data => {
+
+    roadmapProgressCards.innerHTML = "";
+
+    data.data.forEach(roadmap => {
+
+progressRoadmaps.innerHTML += `
+<div class="progress-roadmap-card">
+
+  <h3>
+    🚀 ${
+      roadmap.goal
+        .charAt(0)
+        .toUpperCase() +
+      roadmap.goal.slice(1)
+    }
+  </h3>
+
+  <div class="roadmap-progress-bar">
+    <div
+      class="roadmap-progress-fill"
+      style="width:${roadmap.progress}%"
+    ></div>
+  </div>
+
+  <div class="progress-roadmap-stats">
+
+    <span>
+      ✅ ${roadmap.completedTasks}
+      Completed
+    </span>
+
+    <span>
+      ⏳ ${
+        roadmap.totalTasks -
+        roadmap.completedTasks
+      }
+      Remaining
+    </span>
+
+  </div>
+
+  <div class="progress-badge">
+    ${roadmap.progress}% Complete
+  </div>
+
+</div>
+`;
+
+    });
+
+  });
 
 }
 function showRoadmapTasks(goal) {
@@ -975,5 +1044,28 @@ function showRoadmapTasks(goal) {
     });
 
   });
+
+}
+async function deleteRoadmap(goal) {
+
+  const confirmDelete =
+    confirm(
+      `Delete ${goal} roadmap?`
+    );
+
+  if (!confirmDelete) return;
+
+  await fetch(
+    `http://localhost:5000/api/tasks/roadmaps/${goal}`,
+    {
+      method: "DELETE"
+    }
+  );
+
+  roadmapTasks.innerHTML = "";
+
+  loadRoadmaps();
+  loadGoals();
+  loadTasks();
 
 }

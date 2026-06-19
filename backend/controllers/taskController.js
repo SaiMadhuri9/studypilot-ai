@@ -264,7 +264,27 @@ goals.filter(
 
   }
 };
+const deleteRoadmap = async (req, res) => {
+  try {
 
+    await Task.deleteMany({
+      goal: req.params.goal
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Roadmap deleted"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
 
 module.exports = {
   getTasks,
@@ -273,5 +293,6 @@ module.exports = {
   getTaskById,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  deleteRoadmap
 };
