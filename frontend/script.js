@@ -645,7 +645,7 @@ roadmapSelect.addEventListener(
 
 function loadGoals() {
 
-fetch(`${API_BASE}/api/tasks/goals`)
+fetch(`${API_BASE}/api/goals`)
     .then(response => response.json())
     .then(data => {
 
@@ -668,7 +668,7 @@ fetch(`${API_BASE}/api/tasks/goals`)
 
 function loadRoadmapCards() {
 
-  fetch(`${API_BASE}/api/tasks/roadmaps`)
+  fetch(`${API_BASE}/api/roadmaps`)
     .then(response => response.json())
 .then(data => {
 
@@ -983,7 +983,7 @@ function loadRoadmaps() {
 document.getElementById("roadmapCards");
 
 
-  fetch(`${API_BASE}/api/tasks/roadmaps`)
+  fetch(`${API_BASE}/api/roadmaps`)
     .then(response => response.json())
     .then(data => {
     
@@ -1045,7 +1045,7 @@ deleteRoadmap('${roadmap.goal}');
 function loadProgressRoadmaps() {
 
  fetch(
-`${API_BASE}/api/tasks/roadmaps`
+`${API_BASE}/api/roadmaps`
 )
   .then(response => response.json())
   .then(data => {
