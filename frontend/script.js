@@ -226,7 +226,7 @@ const dayText =
 console.log("Roadmap Progress:", roadmapProgress);
 
      roadmapInfo.innerHTML = `
-  <h3>Roadmap Progress</h3>;
+  <h3>Roadmap Progress</h3>
 
   <p>
     <strong>Completed Topics:</strong>
@@ -1052,16 +1052,14 @@ function loadProgressRoadmaps() {
 
     roadmapProgressCards.innerHTML = "";
 
-    data.data.forEach(roadmap => {
+data.data.forEach(roadmap => {
 
-progressRoadmaps.innerHTML += `
+roadmapProgressCards.innerHTML += `
 <div class="progress-roadmap-card">
 
   <h3>
     🚀 ${
-      roadmap.goal
-        .charAt(0)
-        .toUpperCase() +
+      roadmap.goal.charAt(0).toUpperCase() +
       roadmap.goal.slice(1)
     }
   </h3>
@@ -1096,8 +1094,7 @@ progressRoadmaps.innerHTML += `
 
 </div>
 `;
-
-    });
+});
 
   });
 
