@@ -1,4 +1,6 @@
-
+const {
+  generateRoadmap
+} = require("../services/geminiService");
 console.log("STUDY PLAN CONTROLLER LOADED");
 const Task = require("../models/Task");
 const roadmaps = require("../data/roadmaps");
@@ -40,12 +42,15 @@ try {
   console.log("AI Roadmap Generated");
 
 } catch (error) {
+  console.log("GEMINI ERROR:");
+  console.log(error);
 
   console.log(
-    " Using fallback roadmap."
+    "Using fallback roadmap."
   );
-
 }
+
+
 if (plan.length > 0) {
 
   await Task.deleteMany({

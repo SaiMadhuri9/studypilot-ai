@@ -19,6 +19,11 @@ console.log("Loading task routes...");
 const taskRoutes = require("./routes/taskRoutes");
 app.use("/api/tasks", taskRoutes);
 
+// Vercel-compatible routes
+const { getGoals, getRoadmaps } = require("./controllers/taskController");
+app.get("/api/goals", getGoals);
+app.get("/api/roadmaps", getRoadmaps);
+
 
 // app.get("/", (req, res) => {
 //   res.send("StudyPilot backend running 🚀");
