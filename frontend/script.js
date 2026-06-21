@@ -19,6 +19,15 @@ const roadmapProgressCards =
 document.getElementById(
   "roadmapProgressCards"
 );
+const resourceRoadmapSelect =
+document.getElementById(
+  "resourceRoadmapSelect"
+);
+
+const resourcesContainer =
+document.getElementById(
+  "resourcesContainer"
+);
 const loadingBox =
   document.getElementById("loadingBox");
 const assistantDays =
@@ -623,6 +632,7 @@ loadTasks();
 loadGoals();
 loadRoadmaps();
 loadProgressRoadmaps();
+loadResourceRoadmaps();
 
 document.getElementById("welcomeBox").style.display = "none";
   
@@ -1219,3 +1229,65 @@ if (clearNotesBtn) {
   });
 
 }
+function loadResourceRoadmaps() {
+
+   console.log("LOAD RESOURCES RUNNING");
+
+  console.log(
+    Object.keys(learningResources)
+  );
+  resourceRoadmapSelect.innerHTML =
+    `<option value="">Select Roadmap</option>`;
+
+  Object.keys(learningResources)
+    .forEach(roadmap => {
+
+      resourceRoadmapSelect.innerHTML += `
+        <option value="${roadmap}">
+          ${roadmap}
+        </option>
+      `;
+
+    });
+
+}
+
+resourceRoadmapSelect.addEventListener(
+  "change",
+  () => {
+
+    const roadmap =
+      resourceRoadmapSelect.value;
+
+    resourcesContainer.innerHTML = "";
+
+    if (!roadmap) return;
+
+    learningResources[roadmap]
+      .forEach(resource => {
+
+        resourcesContainer.innerHTML += `
+          <div class="resource-card">
+
+            <h3>${resource.topic}</h3>
+
+            <a href="${resource.video}" target="_blank">
+              🎥 Video
+            </a>
+
+            <a href="${resource.docs}" target="_blank">
+              📄 Documentation
+            </a>
+
+            <a href="${resource.practice}" target="_blank">
+              💻 Practice
+            </a>
+
+          </div>
+        `;
+
+      });
+
+  }
+);
+loadResourceRoadmaps();

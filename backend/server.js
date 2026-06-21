@@ -7,12 +7,18 @@ const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const studyPlanRoutes = require("./routes/studyPlanRoutes");
+const resourceRoutes =
+require("./routes/resourceRoutes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/studyplan", studyPlanRoutes);
+app.use(
+  "/api/resources",
+  resourceRoutes
+);
 
 // routes
 console.log("Loading task routes...");
