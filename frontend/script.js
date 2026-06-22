@@ -7,6 +7,7 @@ const API_BASE =
 console.log("StudyPilot Frontend Loaded");
 
 let allTasks = [];
+let allRoadmaps = [];
 
 const taskList = document.getElementById("taskList");
 const taskInput = document.getElementById("taskInput");
@@ -49,8 +50,23 @@ const roadmapInfo =
   document.getElementById("roadmapInfo");
 const progressFill =
   document.getElementById("progressFill");
+  const noteTitle =
+document.getElementById("noteTitle");
+
+const noteContent =
+document.getElementById("noteContent");
+
+const saveNoteBtn =
+document.getElementById("saveNoteBtn");
+
+const notesContainer =
+document.getElementById("notesContainer");
 const totalTasksEl =
   document.getElementById("totalTasks");
+  const certificatesContainer =
+document.getElementById(
+  "certificatesContainer"
+);
 
 const completedTasksEl =
   document.getElementById("completedTasks");
@@ -633,6 +649,8 @@ loadGoals();
 loadRoadmaps();
 loadProgressRoadmaps();
 loadResourceRoadmaps();
+loadRoadmapCards();
+loadNotes();
 
 document.getElementById("welcomeBox").style.display = "none";
   
@@ -677,10 +695,19 @@ fetch(`${API_BASE}/api/goals`)
 }
 
 function loadRoadmapCards() {
+  
+  console.log("STEP 1");
 
   fetch(`${API_BASE}/api/roadmaps`)
     .then(response => response.json())
 .then(data => {
+   console.log("STEP 2");
+
+  allRoadmaps = data.data;
+  loadCertificates();
+   console.log("ALL ROADMAPS:", allRoadmaps);
+   
+   console.log("STEP 3");
 
   roadmapCards.innerHTML = "";
 
@@ -792,6 +819,7 @@ ${roadmap.progress === 100 ? " roadmap-complete" : ""}
 });
 
     }
+   
 
     function getRoadmapIcon(goal) {
 
@@ -1181,54 +1209,54 @@ async function deleteRoadmap(goal) {
   
 
 }
-const studyNotes =
-  document.getElementById("studyNotes");
+// const studyNotes =
+//   document.getElementById("studyNotes");
 
-const saveNotesBtn =
-  document.getElementById("saveNotesBtn");
+// const saveNotesBtn =
+//   document.getElementById("saveNotesBtn");
 
-const clearNotesBtn =
-  document.getElementById("clearNotesBtn");
+// const clearNotesBtn =
+//   document.getElementById("clearNotesBtn");
 
-if (studyNotes) {
+// if (studyNotes) {
 
-  const savedNotes =
-    localStorage.getItem("studyNotes");
+//   const savedNotes =
+//     localStorage.getItem("studyNotes");
 
-  if (savedNotes) {
-    studyNotes.value = savedNotes;
-  }
+//   if (savedNotes) {
+//     studyNotes.value = savedNotes;
+//   }
 
-}
+// }
 
-if (saveNotesBtn) {
+// if (saveNotesBtn) {
 
-  saveNotesBtn.addEventListener("click", () => {
+//   saveNotesBtn.addEventListener("click", () => {
 
-    localStorage.setItem(
-      "studyNotes",
-      studyNotes.value
-    );
+//     localStorage.setItem(
+//       "studyNotes",
+//       studyNotes.value
+//     );
 
-    alert("Notes saved successfully!");
+//     alert("Notes saved successfully!");
 
-  });
+//   });
 
-}
+// }
 
-if (clearNotesBtn) {
+// if (clearNotesBtn) {
 
-  clearNotesBtn.addEventListener("click", () => {
+//   clearNotesBtn.addEventListener("click", () => {
 
-    localStorage.removeItem("studyNotes");
+//     localStorage.removeItem("studyNotes");
 
-    studyNotes.value = "";
+//     studyNotes.value = "";
 
-    alert("Notes cleared!");
+//     alert("Notes cleared!");
 
-  });
+//   });
 
-}
+// }
 function loadResourceRoadmaps() {
 
    console.log("LOAD RESOURCES RUNNING");
@@ -1291,3 +1319,117 @@ resourceRoadmapSelect.addEventListener(
   }
 );
 loadResourceRoadmaps();
+
+function loadNotes() {
+
+fetch(`${API_BASE}/api/notes`)
+  .then(response => response.json())
+  .then(data => {
+
+    notesContainer.innerHTML = "";
+
+    data.data.forEach(note => {
+
+      notesContainer.innerHTML += `
+      
+<div class="note-card">
+
+  <h3>${note.title}</h3>
+
+  <p>${note.content}</p>
+
+  <button
+    onclick="deleteNote('${note._id}')"
+  >
+    Delete
+  </button>
+
+</div>
+
+      `;
+
+    });
+
+  });
+
+}
+
+async function deleteNote(id) {
+
+  await fetch(
+    `${API_BASE}/api/notes/${id}`,
+    {
+      method: "DELETE"
+    }
+  );
+
+  loadNotes();
+
+}
+loadNotes();
+
+saveNoteBtn.addEventListener(
+  "click",
+  async () => {
+
+    console.log("SAVE NOTE CLICKED");
+
+    await fetch(
+      `${API_BASE}/api/notes`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          title: noteTitle.value,
+          content: noteContent.value
+        })
+      }
+    );
+
+    noteTitle.value = "";
+    noteContent.value = "";
+
+    loadNotes();
+
+  }
+);
+
+function loadCertificates() {
+
+  console.log("CERTIFICATES RUNNING");
+
+  const certificatesContainer =
+    document.getElementById(
+      "certificatesContainer"
+    );
+
+  console.log(certificatesContainer);
+
+  certificatesContainer.innerHTML = "";
+
+  const completedRoadmaps =
+    allRoadmaps.filter(
+      roadmap => roadmap.progress >= 100
+    );
+
+  console.log(completedRoadmaps);
+
+  completedRoadmaps.forEach(roadmap => {
+
+    certificatesContainer.innerHTML += `
+      <div class="certificate-card">
+        <h2>🏆 ${roadmap.goal}</h2>
+        <p>Certificate Earned</p>
+      </div>
+    `;
+
+  });
+
+}
+console.log("CALLING ROADMAP CARDS");
+loadRoadmapCards();

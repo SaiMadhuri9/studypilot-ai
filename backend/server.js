@@ -9,6 +9,8 @@ const cors = require("cors");
 const studyPlanRoutes = require("./routes/studyPlanRoutes");
 const resourceRoutes =
 require("./routes/resourceRoutes");
+const noteRoutes =
+require("./routes/noteRoutes");
 
 const app = express();
 
@@ -18,6 +20,10 @@ app.use("/api/studyplan", studyPlanRoutes);
 app.use(
   "/api/resources",
   resourceRoutes
+);
+app.use(
+  "/api/notes",
+  noteRoutes
 );
 
 // routes

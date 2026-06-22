@@ -2153,3 +2153,48 @@ width:100%;
   text-decoration:none;
   font-weight:600;
 }
+.notes-form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.notes-form input,
+.notes-form textarea{
+  padding:15px;
+  border-radius:12px;
+  border:none;
+}
+
+#notesContainer{
+  display:grid;
+  gap:20px;
+}
+
+.note-card{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08);
+}
+
+.certificate-card{
+  background:#fff;
+  padding:30px;
+  border-radius:24px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+
+.certificate-card h2{
+  font-size:32px;
+  margin-bottom:15px;
+}
+
+.certificate-card p{
+  color:#64748b;
+  font-size:18px;
+}

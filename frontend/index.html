@@ -60,6 +60,9 @@
   <button class="menu-btn" data-section="progressSection">
     📈 Progress
   </button>
+  <button class="menu-btn" data-section="certificatesSection">
+  🏆 Certificates
+</button>
 
 </div>
 
@@ -327,22 +330,29 @@ class="page-section">
 <section id="notesSection" class="page-section">
 
   <h2>📝 Study Notes</h2>
+  <div class="notes-form">
+
+  <input
+    type="text"
+    id="noteTitle"
+    placeholder="Note Title"
+  />
 
   <textarea
-    id="studyNotes"
-    placeholder="Write what you learned today, weak areas, revision notes..."
-    rows="10">
-  </textarea>
+    id="noteContent"
+    placeholder="Write your note..."
+  ></textarea>
 
-  <div class="notes-buttons">
-    <button id="saveNotesBtn">
-      💾 Save Notes
-    </button>
+  <button id="saveNoteBtn">
+    Save Note
+  </button>
 
-    <button id="clearNotesBtn">
-      🗑️ Clear Notes
-    </button>
-  </div>
+</div>
+
+<div id="notesContainer">
+
+</div>
+
 
 </section>
 <section
@@ -362,7 +372,7 @@ class="page-section">
 
     <p>Streak</p>
     </div>
-
+    
 
 
 <div class="stat-card achievement-card">
@@ -416,6 +426,17 @@ class="page-section">
   <div id="roadmapProgressCards"></div>
 
 </div>
+
+</section>
+<section
+id="certificatesSection"
+class="page-section">
+
+  <h2>🏆 Certificates</h2>
+
+  <div id="certificatesContainer">
+
+  </div>
 
 </section>
 
