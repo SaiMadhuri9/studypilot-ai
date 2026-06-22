@@ -1599,7 +1599,7 @@ font-weight:600;
 
 cursor:pointer;
 
-transition:0.3s ease;
+transition:0.3s;
 
 text-align:left;
 
@@ -1608,8 +1608,7 @@ box-shadow:none;
 
 .menu-btn:hover{
 background:#1e293b;
-
-transform:none;
+transform:translateX(8px);
 }
 
 .menu-btn.active{
@@ -1635,6 +1634,11 @@ display:block;
 .sidebar{
 width:100%;
 height:auto;
+backdrop-filter:blur(20px);
+  box-shadow:
+  5px 0 25px rgba(0,0,0,.15);
+
+
 
 position:relative;
 
@@ -1673,23 +1677,14 @@ width:100%;
 .quick-overview{
 
   display:grid;
-
-  grid-template-columns:
-  repeat(4,1fr);
-
-  gap:20px;
-
   margin-bottom:25px;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-top:25px;
 }
 .overview-card{
 
-  background:white;
-
-  padding:15px;
-
-  border-radius:20px;
-
-  text-align:center;
+  border-radius:24px;
 
   min-height:120px;
 
@@ -1697,11 +1692,29 @@ width:100%;
   flex-direction:column;
   justify-content:center;
 
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(12px);
+
+  border-radius:24px;
+
+  padding:25px;
+
+  text-align:center;
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,.08);
+
+  transition:.3s;
+
 }
 
 .overview-card h3{
   margin:0;
-  font-size:2.5rem;
+  font-size:36px;
+  color:#2563eb;
+}
+.overview-card:hover{
+  transform:translateY(-8px);
 }
 
 #currentRoadmapWidget{
@@ -1759,14 +1772,20 @@ width:100%;
 .roadmap-card{
   background:white;
   padding:25px;
-  border-radius:20px;
+ 
   cursor:pointer;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
-  transition:0.3s;
+   border-radius:24px;
+  transition:.3s;
+
+  overflow:hidden;
 }
 
 .roadmap-card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-10px);
+
+  box-shadow:
+  0 20px 40px rgba(37,99,235,.18);
 }
 
 .roadmap-card h3{
@@ -1911,6 +1930,7 @@ width:100%;
   height: auto !important;
   position: relative !important;
   padding: 15px !important;
+  
 }
 
   .main-content {
@@ -2181,12 +2201,38 @@ width:100%;
 }
 
 .certificate-card{
-  background:#fff;
-  padding:30px;
-  border-radius:24px;
+
   text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+
   margin-bottom:20px;
+
+  background:white;
+
+  border-radius:30px;
+
+  padding:35px;
+
+  border-left:8px solid #2563eb;
+
+  box-shadow:
+  0 15px 40px rgba(0,0,0,.08);
+}
+
+
+.certificate-badge{
+  display:inline-block;
+
+  margin-top:15px;
+
+  padding:10px 18px;
+
+  border-radius:999px;
+
+  background:#22c55e;
+
+  color:white;
+
+  font-weight:bold;
 }
 
 .certificate-card h2{
@@ -2197,4 +2243,52 @@ width:100%;
 .certificate-card p{
   color:#64748b;
   font-size:18px;
+}
+.hero-banner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:35px;
+  border-radius:28px;
+
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+
+  color:white;
+
+  margin-bottom:30px;
+
+  box-shadow:
+  0 20px 50px rgba(37,99,235,.25);
+}
+
+.hero-content h1{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.hero-content p{
+  opacity:.9;
+  font-size:18px;
+}
+
+.hero-stats{
+  display:flex;
+  gap:20px;
+}
+
+.mini-stat{
+  background:rgba(255,255,255,.15);
+  padding:18px 24px;
+  border-radius:18px;
+  text-align:center;
+  backdrop-filter:blur(10px);
+}
+
+.mini-stat h2{
+  font-size:30px;
+  margin:0;
 }

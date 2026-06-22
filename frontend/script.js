@@ -223,13 +223,10 @@ if (achievementTitle === "") {
 }
 
 
-const streak =
-  Number(
-    localStorage.getItem("studyStreak")
-  ) || 0;
 
-const dayText =
-  streak === 1 ? "Day" : "Days";
+
+// const dayText =
+//   streak === 1 ? "Day" : "Days";
 
 
   if (tasks.length === 0) {
@@ -279,6 +276,14 @@ const completedTasks =
   tasks.filter(
     task => task.completed
   ).length;
+  const streak = completedTasks;
+
+
+document.getElementById(
+  "overviewStreak"
+).textContent = streak;
+
+streakCountEl.textContent = streak;
 
 document.getElementById(
 "overviewTasks"
@@ -315,7 +320,7 @@ remainingTasksEl.textContent =
 progressPercentEl.textContent =
   progressPercent + "%";
 
-  streakCountEl.textContent = streak;
+ 
 
   let achievements = 0;
 
@@ -704,6 +709,10 @@ function loadRoadmapCards() {
    console.log("STEP 2");
 
   allRoadmaps = data.data;
+  document.getElementById(
+  "overviewRoadmaps"
+).textContent = data.data.length;
+
   loadCertificates();
    console.log("ALL ROADMAPS:", allRoadmaps);
    
@@ -711,35 +720,20 @@ function loadRoadmapCards() {
 
   roadmapCards.innerHTML = "";
 
-  if(data.data.length > 0){
-
-const current = data.data[0];
-
-document.getElementById(
-"currentRoadmapName"
+ document.getElementById(
+  "currentRoadmapName"
 ).textContent =
-current.goal || "Roadmap";
+"Select a roadmap";
 
 document.getElementById(
-"currentRoadmapPercent"
+  "currentRoadmapPercent"
 ).textContent =
-(current.progress || 0) + "%";
+"0%";
 
 document.getElementById(
-"currentRoadmapProgress"
+  "currentRoadmapProgress"
 ).style.width =
-(current.progress || 0) + "%";
-
-}
-else{
-
-document.getElementById(
-"currentRoadmapName"
-).textContent =
-"No roadmap generated";
-
-}
-
+"0%";
   data.data.forEach(roadmap => {
     document.getElementById(
 "overviewRoadmaps"
@@ -750,12 +744,14 @@ data.data.length;
 
     <div
       class="roadmap-card"
-      onclick="
-        roadmapSelect.value='${roadmap.goal}';
-        loadTasks('${roadmap.goal}');
-        loadResources('${roadmap.goal}');
-        loadResources('${roadmap.goal}');
-      "
+ onclick="
+roadmapSelect.value='${roadmap.goal}';
+loadTasks('${roadmap.goal}');
+loadResources('${roadmap.goal}');
+document.getElementById('currentRoadmapName').textContent='${roadmap.goal}';
+document.getElementById('currentRoadmapPercent').textContent='${roadmap.progress}%';
+document.getElementById('currentRoadmapProgress').style.width='${roadmap.progress}%';
+"
     >
 
       <div class="roadmap-header">
@@ -1095,12 +1091,14 @@ data.data.forEach(roadmap => {
 roadmapProgressCards.innerHTML += `
 <div class="progress-roadmap-card">
 
+
   <h3>
     🚀 ${
       roadmap.goal.charAt(0).toUpperCase() +
       roadmap.goal.slice(1)
     }
   </h3>
+  
 
   <div class="roadmap-progress-bar">
     <div
@@ -1423,8 +1421,18 @@ function loadCertificates() {
 
     certificatesContainer.innerHTML += `
       <div class="certificate-card">
-        <h2>🏆 ${roadmap.goal}</h2>
-        <p>Certificate Earned</p>
+        <h2>🏆 Certificate of Completion</h2>
+
+<h3>${roadmap.goal.toUpperCase()}</h3>
+
+<p>
+Successfully completed the
+${roadmap.goal} roadmap.
+</p>
+
+<span class="certificate-badge">
+Completed
+</span>
       </div>
     `;
 
