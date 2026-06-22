@@ -42,24 +42,32 @@ async function generateResources(goal) {
   const prompt = `
 Generate learning resources for ${goal}.
 
-Return ONLY valid JSON:
+Return ONLY valid JSON.
 
 {
   "videos": [
-    "Video 1",
-    "Video 2"
+    {
+      "title": "",
+      "url": ""
+    }
   ],
   "docs": [
-    "Documentation 1",
-    "Documentation 2"
+    {
+      "title": "",
+      "url": ""
+    }
   ],
   "practice": [
-    "Practice Site 1",
-    "Practice Site 2"
+    {
+      "title": "",
+      "url": ""
+    }
   ],
   "projects": [
-    "Project 1",
-    "Project 2"
+    {
+      "title": "",
+      "url": ""
+    }
   ]
 }
 
@@ -67,8 +75,9 @@ Rules:
 - Return only JSON
 - No markdown
 - No explanation
+- URLs must be real and valid
+- Include 3 resources for each category
 `;
-
   const response =
     await ai.models.generateContent({
       model: "gemini-2.5-flash",

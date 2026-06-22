@@ -2356,3 +2356,35 @@ width:100%;
   font-size:30px;
   margin:0;
 }
+.resource-link {
+  display: block;
+  margin: 10px 0;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.resource-link:hover {
+  text-decoration: underline;
+}
+.resource-link {
+  display: block;
+  margin: 10px 0;
+  padding: 16px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.resource-link:hover {
+  transform: translateY(-2px);
+  transition: 0.3s;
+}

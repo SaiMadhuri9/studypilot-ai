@@ -1367,24 +1367,60 @@ resourcesContainer.innerHTML = `
   <h2>📚 ${roadmap} Resources</h2>
 
   <h3>🎥 Videos</h3>
-  ${resources.videos.map(video =>
-    `<p>${video}</p>`
-  ).join("")}
+ ${resources.videos
+  .map(
+    item => `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        🎥 ${item.title}
+      </a>
+    `
+  )
+  .join("")}
 
   <h3>📖 Documentation</h3>
-  ${resources.docs.map(doc =>
-    `<p>${doc}</p>`
-  ).join("")}
+  ${resources.docs
+  .map(
+    item => `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        📖 ${item.title}
+      </a>
+    `
+  )
+  .join("")}
 
   <h3>💻 Practice</h3>
-  ${resources.practice.map(item =>
-    `<p>${item}</p>`
-  ).join("")}
+  ${resources.practice
+  .map(
+    item => `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        💻 ${item.title}
+      </a>
+    `
+  )
+  .join("")}
 
   <h3>🚀 Projects</h3>
-  ${resources.projects.map(project =>
-    `<p>${project}</p>`
-  ).join("")}
+ ${resources.projects
+  .map(
+    item => `
+      <p>
+        🚀 ${item.title}
+      </p>
+    `
+  )
+  .join("")}
 
 </div>
 
