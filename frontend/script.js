@@ -891,66 +891,106 @@ const resourcesData = {
 
 };
 
-function loadResources(goal) {
+async function loadResources(goal) {
 
   const resourcesContainer =
-    document.getElementById("resourcesContainer");
+    document.getElementById(
+      "resourcesContainer"
+    );
 
-  const resources = {
+  resourcesContainer.innerHTML =
+    "<p>🤖 Generating AI Resources...</p>";
 
-    java: {
-      notes: "https://www.javatpoint.com/java-tutorial",
-      video: "https://www.youtube.com/watch?v=BGTx91t8q50",
-      practice: "https://www.hackerrank.com/domains/java"
-    },
+  try {
 
-    react: {
-      notes: "https://react.dev",
-      video: "https://www.youtube.com/watch?v=bMknfKXIFA8",
-      practice: "https://www.frontendmentor.io"
+    const response =
+      await fetch(
+        `${API_BASE}/api/ai-resources/generate`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            goal
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!data.success) {
+
+      resourcesContainer.innerHTML =
+        "<p>No resources available.</p>";
+
+      return;
     }
 
-  };
+    const resources =
+      data.resources;
 
-  const data = resources[goal.toLowerCase()];
+    resourcesContainer.innerHTML = `
 
-  if (!data) {
+      <div class="resource-card">
+
+        <h2>
+          📚 ${goal} Resources
+        </h2>
+
+        <h3>🎥 Videos</h3>
+
+        ${resources.videos
+          .map(
+            item =>
+              `<p>${item}</p>`
+          )
+          .join("")}
+
+        <h3>📖 Documentation</h3>
+
+        ${resources.docs
+          .map(
+            item =>
+              `<p>${item}</p>`
+          )
+          .join("")}
+
+        <h3>💻 Practice</h3>
+
+        ${resources.practice
+          .map(
+            item =>
+              `<p>${item}</p>`
+          )
+          .join("")}
+
+        <h3>🚀 Projects</h3>
+
+        ${resources.projects
+          .map(
+            item =>
+              `<p>${item}</p>`
+          )
+          .join("")}
+
+      </div>
+
+    `;
+
+  } catch (error) {
+
+    console.log(error);
+
     resourcesContainer.innerHTML =
-      "<p>No resources available.</p>";
-    return;
+      "<p>Failed to load AI resources.</p>";
+
   }
 
-  resourcesContainer.innerHTML = `
-    <div class="resource-card">
-
-      <h2>📚 ${goal} Resources</h2>
-
-      <a
-  class="resource-link"
-  href="${data.notes}"
-  target="_blank"
->
-  📚 Notes
-</a>
-
-     <a
-  class="resource-link"
-  href="${data.video}"
-  target="_blank"
->
-  🎥 YouTube Course
-</a>
-
-      <a
-  class="resource-link"
-  href="${data.practice}"
-  target="_blank"
->
-  💻 Practice Problems
-</a>
-
-    </div>
-  `;
 }
 
 const themeToggle =
@@ -1255,64 +1295,103 @@ async function deleteRoadmap(goal) {
 //   });
 
 // }
-function loadResourceRoadmaps() {
+async function loadResourceRoadmaps() {
 
-   console.log("LOAD RESOURCES RUNNING");
+  const response =
+    await fetch(
+      `${API_BASE}/api/roadmaps`
+    );
 
-  console.log(
-    Object.keys(learningResources)
-  );
+  const data =
+    await response.json();
+
+  console.log(data);
+
   resourceRoadmapSelect.innerHTML =
-    `<option value="">Select Roadmap</option>`;
+    `<option value="">
+      Select Roadmap
+    </option>`;
 
-  Object.keys(learningResources)
-    .forEach(roadmap => {
+  data.data.forEach(roadmap => {
 
-      resourceRoadmapSelect.innerHTML += `
-        <option value="${roadmap}">
-          ${roadmap}
-        </option>
-      `;
+    resourceRoadmapSelect.innerHTML += `
+      <option value="${roadmap.goal}">
+        ${roadmap.goal}
+      </option>
+    `;
 
-    });
+  });
 
 }
-
 resourceRoadmapSelect.addEventListener(
   "change",
-  () => {
+  async () => {
 
     const roadmap =
       resourceRoadmapSelect.value;
 
-    resourcesContainer.innerHTML = "";
-
     if (!roadmap) return;
 
-    learningResources[roadmap]
-      .forEach(resource => {
+    const response =
+      await fetch(
+        `${API_BASE}/api/ai-resources/generate`,
+        {
+          method: "POST",
 
-        resourcesContainer.innerHTML += `
-          <div class="resource-card">
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-            <h3>${resource.topic}</h3>
+          body: JSON.stringify({
+            goal: roadmap
+          })
+        }
+      );
 
-            <a href="${resource.video}" target="_blank">
-              🎥 Video
-            </a>
+    const data = await response.json();
 
-            <a href="${resource.docs}" target="_blank">
-              📄 Documentation
-            </a>
+console.log(data);
 
-            <a href="${resource.practice}" target="_blank">
-              💻 Practice
-            </a>
+if (!data.success) {
+  resourcesContainer.innerHTML =
+    `<p>Failed to generate resources.</p>`;
+  return;
+}
+const resources = data.resources;
 
-          </div>
-        `;
+resourcesContainer.innerHTML = `
 
-      });
+<div class="resource-card">
+
+  <h2>📚 ${roadmap} Resources</h2>
+
+  <h3>🎥 Videos</h3>
+  ${resources.videos.map(video =>
+    `<p>${video}</p>`
+  ).join("")}
+
+  <h3>📖 Documentation</h3>
+  ${resources.docs.map(doc =>
+    `<p>${doc}</p>`
+  ).join("")}
+
+  <h3>💻 Practice</h3>
+  ${resources.practice.map(item =>
+    `<p>${item}</p>`
+  ).join("")}
+
+  <h3>🚀 Projects</h3>
+  ${resources.projects.map(project =>
+    `<p>${project}</p>`
+  ).join("")}
+
+</div>
+
+`;
+      
+
+    console.log(data);
 
   }
 );

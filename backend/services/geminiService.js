@@ -37,6 +37,48 @@ Rules:
   return response.text.trim();
 }
 
+async function generateResources(goal) {
+
+  const prompt = `
+Generate learning resources for ${goal}.
+
+Return ONLY valid JSON:
+
+{
+  "videos": [
+    "Video 1",
+    "Video 2"
+  ],
+  "docs": [
+    "Documentation 1",
+    "Documentation 2"
+  ],
+  "practice": [
+    "Practice Site 1",
+    "Practice Site 2"
+  ],
+  "projects": [
+    "Project 1",
+    "Project 2"
+  ]
+}
+
+Rules:
+- Return only JSON
+- No markdown
+- No explanation
+`;
+
+  const response =
+    await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+  return response.text.trim();
+}
+
 module.exports = {
-  generateRoadmap
+  generateRoadmap,
+  generateResources
 };
