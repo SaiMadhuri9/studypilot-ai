@@ -1932,6 +1932,21 @@ width:100%;
   padding: 15px !important;
   
 }
+.hero-banner{
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .hero-stats{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .mini-stat{
+    flex:1;
+    min-width:120px;
+  }
 
   .main-content {
   margin-left: 0 !important;
@@ -1976,6 +1991,9 @@ width:100%;
   .stats-grid{
     grid-template-columns:1fr;
   }
+   .quick-overview{
+    grid-template-columns:1fr;
+  }
 
 }
 @media (max-width: 768px) {
@@ -1983,6 +2001,25 @@ width:100%;
   .roadmap-card {
     width: 100%;
   }
+   #currentRoadmapWidget,
+  #todayTasksWidget{
+    padding:18px;
+  }
+  #resourceRoadmapSelect{
+    width:100%;
+  }
+   #todayTasksList li{
+    font-size:14px;
+    padding:10px;
+  }
+  .certificate-card{
+    padding:20px;
+  }
+
+  .certificate-card h2{
+    font-size:24px;
+  }
+
 
   .progress-roadmap-card {
     width: 100%;
@@ -2110,9 +2147,25 @@ width:100%;
     align-items:center;
 
     padding:12px 0;
+    display:flex !important;
 
     z-index:9999;
   }
+  .quick-overview{
+    grid-template-columns:1fr 1fr;
+  }
+  .sidebar{
+    display:none !important;
+  }
+
+
+  .main-content{
+    width:100% !important;
+    margin-left:0 !important;
+    padding:15px !important;
+    padding-bottom:90px !important;
+  }
+
 
   .mobile-nav .menu-btn{
 
@@ -2129,6 +2182,17 @@ width:100%;
     box-shadow:none !important;
 
     font-size:22px;
+  }
+  .hero-banner{
+    flex-direction:column;
+    text-align:center;
+    gap:20px;
+  }
+
+  .hero-stats{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
   }
 
   .mobile-nav .menu-btn.active{
