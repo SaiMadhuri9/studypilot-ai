@@ -746,6 +746,7 @@ data.data.length;
       class="roadmap-card"
  onclick="
 roadmapSelect.value='${roadmap.goal}';
+showRoadmapTasks('${roadmap.goal}');
 loadTasks('${roadmap.goal}');
 loadResources('${roadmap.goal}');
 document.getElementById('currentRoadmapName').textContent='${roadmap.goal}';
@@ -933,6 +934,8 @@ async function loadResources(goal) {
 
     const resources =
       data.resources;
+      console.log(resources);
+      console.log(resources.videos[0]);
 
     resourcesContainer.innerHTML = `
 
@@ -942,41 +945,73 @@ async function loadResources(goal) {
           📚 ${goal} Resources
         </h2>
 
-        <h3>🎥 Videos</h3>
+       <h3>🎥 Videos</h3>
 
-        ${resources.videos
-          .map(
-            item =>
-              `<p>${item}</p>`
-          )
-          .join("")}
+${resources.videos
+  .map(
+    item =>
+      `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        🎥 ${item.title}
+      </a>
+      `
+  )
+  .join("")}
 
         <h3>📖 Documentation</h3>
 
-        ${resources.docs
-          .map(
-            item =>
-              `<p>${item}</p>`
-          )
-          .join("")}
+${resources.docs
+  .map(
+    item =>
+      `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        📖 ${item.title}
+      </a>
+      `
+  )
+  .join("")}
 
         <h3>💻 Practice</h3>
 
-        ${resources.practice
-          .map(
-            item =>
-              `<p>${item}</p>`
-          )
-          .join("")}
+${resources.practice
+  .map(
+    item =>
+      `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        💻 ${item.title}
+      </a>
+      `
+  )
+  .join("")}
 
         <h3>🚀 Projects</h3>
 
-        ${resources.projects
-          .map(
-            item =>
-              `<p>${item}</p>`
-          )
-          .join("")}
+${resources.projects
+  .map(
+    item =>
+      `
+      <a
+        class="resource-link"
+        href="${item.url}"
+        target="_blank"
+      >
+        🚀 ${item.title}
+      </a>
+      `
+  )
+  .join("")}
 
       </div>
 
@@ -1073,10 +1108,13 @@ console.log("Roadmaps Array:", data.data);
         
           <div
             class="roadmap-card"
-           onclick="
-  roadmapSelect.value='${roadmap.goal}';
-  showRoadmapTasks('${roadmap.goal}');
-  loadResources('${roadmap.goal}');
+onclick="
+roadmapSelect.value='${roadmap.goal}';
+showRoadmapTasks('${roadmap.goal}');
+loadResources('${roadmap.goal}');
+document.getElementById('currentRoadmapName').textContent='${roadmap.goal}';
+document.getElementById('currentRoadmapPercent').textContent='${roadmap.progress}%';
+document.getElementById('currentRoadmapProgress').style.width='${roadmap.progress}%';
 "
           >
 
@@ -1129,7 +1167,18 @@ function loadProgressRoadmaps() {
 data.data.forEach(roadmap => {
 
 roadmapProgressCards.innerHTML += `
-<div class="progress-roadmap-card">
+// <div
+//   class="progress-roadmap-card"
+//   onclick="
+//     document.querySelector('[data-section=roadmapSection]').click();
+//     showRoadmapTasks('${roadmap.goal}');
+//     loadResources('${roadmap.goal}');
+//   "
+// >
+<div
+  class="progress-roadmap-card"
+  onclick="console.log('CLICKED:', '${roadmap.goal}')"
+>
 
 
   <h3>
@@ -1176,24 +1225,34 @@ roadmapProgressCards.innerHTML += `
 
 }
 function showRoadmapTasks(goal) {
-  console.log("REFRESHING:", goal);
+
+  console.log("SHOW ROADMAP TASKS:", goal);
 
   fetch(`${API_BASE}/api/tasks?goal=${goal}`)
-  .then(response => response.json())
-  .then(data => {
+    .then(response => {
+      console.log("FETCH STATUS:", response.status);
+      return response.json();
+    })
+    .then(data => {
 
-    roadmapTasks.innerHTML = `
-      <h2>${goal} Roadmap Tasks</h2>
-    `;
+      console.log("TASK DATA:", data);
 
-    const generatedTasks =
-      data.data.filter(
+      roadmapTasks.innerHTML = `
+        <h2>${goal} Roadmap Tasks</h2>
+      `;
+
+      const generatedTasks = data.data.filter(
         task => task.isGenerated
       );
 
-    generatedTasks.forEach(task => {
+      console.log(
+        "GENERATED TASKS:",
+        generatedTasks
+      );
 
-      roadmapTasks.innerHTML += `
+      generatedTasks.forEach(task => {
+
+        roadmapTasks.innerHTML += `
 
 <div class="
   roadmap-task-card
@@ -1206,21 +1265,25 @@ function showRoadmapTasks(goal) {
   </p>
 
   ${!task.completed ? `
-<button onclick="completeTask('${task._id}')">
-  Complete
-</button>
-` : ""}
+  <button onclick="completeTask('${task._id}')">
+    Complete
+  </button>
+  ` : ""}
 
-<button onclick="deleteTask('${task._id}')">
-  Delete
-</button>
+  <button onclick="deleteTask('${task._id}')">
+    Delete
+  </button>
 
 </div>
+
 `;
 
-    });
+      });
 
-  });
+    })
+    .catch(error => {
+      console.log("ROADMAP ERROR:", error);
+    });
 
 }
 async function deleteRoadmap(goal) {

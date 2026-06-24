@@ -39,21 +39,45 @@ const generateAIResources =
     success: true,
     resources: {
       videos: [
-        `${goal} Full Course - FreeCodeCamp`,
-        `${goal} Tutorial - Programming with Mosh`
-      ],
+  {
+    title: `${goal} Full Course - FreeCodeCamp`,
+    url: "https://www.youtube.com/@freecodecamp"
+  },
+  {
+    title: `${goal} Tutorial - Programming with Mosh`,
+    url: "https://www.youtube.com/@programmingwithmosh"
+  }
+],
       docs: [
-        `Official ${goal} Documentation`,
-        `${goal} Guide`
-      ],
+  {
+    title: `Official ${goal} Documentation`,
+    url: "https://developer.mozilla.org/"
+  },
+  {
+    title: `${goal} Guide`,
+    url: "https://www.w3schools.com/"
+  }
+],
       practice: [
-        "HackerRank",
-        "LeetCode"
-      ],
+  {
+    title: "HackerRank",
+    url: "https://www.hackerrank.com/"
+  },
+  {
+    title: "LeetCode",
+    url: "https://leetcode.com/"
+  }
+],
       projects: [
-        `Build a ${goal} Project`,
-        `Create a Portfolio Project using ${goal}`
-      ]
+  {
+    title: `Build a ${goal} Project`,
+    url: "https://github.com/topics/projects"
+  },
+  {
+    title: `Create a Portfolio Project using ${goal}`,
+    url: "https://github.com/"
+  }
+]
     }
   });
 
