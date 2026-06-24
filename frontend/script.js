@@ -805,7 +805,15 @@ ${roadmap.progress === 100 ? " roadmap-complete" : ""}
 ">
   ${roadmap.progress}% Complete
 </p>
-     
+     <button
+  onclick="
+    event.stopPropagation();
+    deleteRoadmap('${roadmap.goal}');
+  "
+  class="delete-roadmap-btn"
+>
+  🗑 Delete Roadmap
+</button>
 
     </div>
 
